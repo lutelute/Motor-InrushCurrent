@@ -463,6 +463,7 @@
             const [viewCycles, setViewCycles] = useState(10);
             const [stopTime, setStopTime] = useState(50);
             const [showCircuit, setShowCircuit] = useState(false);
+            const [circuitSlip, setCircuitSlip] = useState(1);
 
             const motor = MOTOR_TYPES[selectedMotor];
             const inrushMultiplier = motor.inrushMultiplier;
@@ -684,41 +685,189 @@
                         <SimpleChart data={simulationData.data} selectedMotor={selectedMotor} />
                     </div>
 
-                    {/* 等価回路（簡易版） */}
+                    {/* 等価回路表示 */}
                     {showCircuit && (
                         <div className="circuit-container">
                             <h3 style={{margin: '0 0 15px 0', fontSize: '1.2rem', color: '#22C55E'}}>
-                                {motor.name} - 等価回路の概念
+                                {motor.name} - 等価回路
                             </h3>
-                            <div style={{padding: '20px', backgroundColor: '#111827', borderRadius: '8px', textAlign: 'center'}}>
-                                {motor.category === '誘導機' ? (
-                                    <div>
-                                        <p style={{color: '#D1D5DB', marginBottom: '15px'}}>
-                                            誘導機等価回路: R₁ + jX₁ + (jXₘ || R₂'/s + jX₂')
-                                        </p>
-                                        <div style={{color: '#9CA3AF', fontSize: '0.9rem'}}>
-                                            <p>R₁: 一次抵抗, X₁: 一次漏れリアクタンス</p>
-                                            <p>Xₘ: 励磁リアクタンス, R₂'/s: 二次抵抗（s=スリップ）</p>
-                                            {motor.id === 'woundRotor' && (
-                                                <p style={{color: '#A855F7'}}>巻線型: 外部抵抗で始動電流制御可能</p>
-                                            )}
-                                        </div>
+                            
+                            {motor.category === '誘導機' && (
+                                <div>
+                                    <div style={{marginBottom: '15px', textAlign: 'center'}}>
+                                        <button 
+                                            onClick={() => setCircuitSlip(1)}
+                                            className={`toggle-button ${circuitSlip === 1 ? 'active' : ''}`}
+                                            style={{marginRight: '10px'}}
+                                        >
+                                            s = 1 (停止)
+                                        </button>
+                                        <button 
+                                            onClick={() => setCircuitSlip(0.03)}
+                                            className={`toggle-button ${circuitSlip === 0.03 ? 'active' : ''}`}
+                                        >
+                                            s = 0.03 (定格)
+                                        </button>
                                     </div>
-                                ) : (
-                                    <div>
-                                        <p style={{color: '#D1D5DB', marginBottom: '15px'}}>
-                                            同期機等価回路: Rₐ + jXₛ + E（誘起電圧）
-                                        </p>
-                                        <div style={{color: '#9CA3AF', fontSize: '0.9rem'}}>
-                                            <p>Rₐ: 電機子抵抗, Xₛ: 同期リアクタンス</p>
-                                            <p>E: 界磁による誘起電圧</p>
-                                            {motor.id === 'salientPole' && (
-                                                <p style={{color: '#EC4899'}}>突極型: Xd ≠ Xq (直軸・横軸リアクタンス)</p>
-                                            )}
+                                    
+                                    {/* 誘導機等価回路図 */}
+                                    <svg viewBox="0 0 600 220" style={{width: '100%', maxWidth: '600px', margin: '0 auto', display: 'block'}}>
+                                        <rect x="0" y="0" width="600" height="220" fill="#1F2937" rx="8" />
+                                        
+                                        {/* 電源 */}
+                                        <circle cx="40" cy="110" r="18" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                                        <text x="40" y="115" textAnchor="middle" fill="#3B82F6" fontSize="12" fontWeight="bold">V</text>
+                                        <line x1="40" y1="92" x2="40" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        <line x1="40" y1="128" x2="40" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        <line x1="40" y1="50" x2="80" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* R1 */}
+                                        <rect x="80" y="40" width="40" height="20" fill="none" stroke="#EF4444" strokeWidth="2" />
+                                        <text x="100" y="35" textAnchor="middle" fill="#EF4444" fontSize="10">R₁</text>
+                                        
+                                        <line x1="120" y1="50" x2="150" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* X1 */}
+                                        <path d="M150,50 Q160,40 170,50 Q180,60 190,50 Q200,40 210,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                                        <text x="180" y="35" textAnchor="middle" fill="#F59E0B" fontSize="10">jX₁</text>
+                                        
+                                        <line x1="210" y1="50" x2="250" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        <circle cx="250" cy="50" r="3" fill="#9CA3AF" />
+                                        
+                                        {/* 励磁回路 */}
+                                        <line x1="250" y1="50" x2="250" y2="80" stroke="#9CA3AF" strokeWidth="2" />
+                                        <path d="M250,80 Q240,90 250,100 Q260,110 250,120 Q240,130 250,140" fill="none" stroke="#22C55E" strokeWidth="2" />
+                                        <text x="230" y="115" textAnchor="end" fill="#22C55E" fontSize="9">jXₘ</text>
+                                        <line x1="250" y1="140" x2="250" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        <line x1="250" y1="50" x2="300" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* X2' */}
+                                        <path d="M300,50 Q310,40 320,50 Q330,60 340,50 Q350,40 360,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                                        <text x="330" y="35" textAnchor="middle" fill="#F59E0B" fontSize="10">jX₂'</text>
+                                        
+                                        <line x1="360" y1="50" x2="400" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* R2'/s */}
+                                        <rect x="400" y="40" width="50" height="20" fill="none" stroke="#EC4899" strokeWidth="2" />
+                                        <text x="425" y="35" textAnchor="middle" fill="#EC4899" fontSize="10">R₂'/s</text>
+                                        
+                                        <line x1="450" y1="50" x2="480" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* 外部抵抗（巻線型の場合） */}
+                                        {motor.id === 'woundRotor' && (
+                                            <>
+                                                <rect x="480" y="40" width="40" height="20" fill="none" stroke="#A855F7" strokeWidth="2" strokeDasharray="4,2" />
+                                                <text x="500" y="35" textAnchor="middle" fill="#A855F7" fontSize="10">R_ext</text>
+                                                <line x1="520" y1="50" x2="560" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                                <line x1="560" y1="50" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                                            </>
+                                        )}
+                                        {motor.id !== 'woundRotor' && (
+                                            <>
+                                                <line x1="480" y1="50" x2="560" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                                <line x1="560" y1="50" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                                            </>
+                                        )}
+                                        
+                                        <line x1="40" y1="170" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* スリップ表示 */}
+                                        <rect x="400" y="70" width="80" height="30" fill="#374151" rx="4" />
+                                        <text x="440" y="85" textAnchor="middle" fill="#9CA3AF" fontSize="9">s = {circuitSlip}</text>
+                                        <text x="440" y="96" textAnchor="middle" fill="#EC4899" fontSize="8">
+                                            {circuitSlip === 1 ? '(停止)' : '(定格)'}
+                                        </text>
+                                        
+                                        {/* 凡例 */}
+                                        <text x="20" y="200" fill="#9CA3AF" fontSize="9">
+                                            <tspan fill="#EF4444">R₁</tspan>:一次抵抗 <tspan fill="#F59E0B">X₁,X₂'</tspan>:漏れリアクタンス <tspan fill="#22C55E">Xₘ</tspan>:励磁 <tspan fill="#EC4899">R₂'/s</tspan>:二次抵抗
+                                            {motor.id === 'woundRotor' && <tspan fill="#A855F7"> R_ext</tspan>}
+                                            {motor.id === 'woundRotor' && ':外部抵抗'}
+                                        </text>
+                                    </svg>
+                                    
+                                    {motor.id === 'woundRotor' && (
+                                        <div style={{marginTop: '10px', fontSize: '0.8rem', color: '#A855F7', backgroundColor: '#374151', padding: '10px', borderRadius: '6px'}}>
+                                            💡 巻線型はスリップリング経由で外部抵抗 R_ext を接続可能。始動時に抵抗を大きくして電流を抑制できます。
                                         </div>
+                                    )}
+                                </div>
+                            )}
+                            
+                            {motor.category === '同期機' && (
+                                <div>
+                                    {/* 同期機等価回路図 */}
+                                    <svg viewBox="0 0 600 220" style={{width: '100%', maxWidth: '600px', margin: '0 auto', display: 'block'}}>
+                                        <rect x="0" y="0" width="600" height="220" fill="#1F2937" rx="8" />
+                                        
+                                        {/* 電源 */}
+                                        <circle cx="40" cy="110" r="18" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                                        <text x="40" y="115" textAnchor="middle" fill="#3B82F6" fontSize="12" fontWeight="bold">V</text>
+                                        <line x1="40" y1="92" x2="40" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        <line x1="40" y1="128" x2="40" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        <line x1="40" y1="50" x2="80" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* Ra - 電機子抵抗 */}
+                                        <rect x="80" y="40" width="40" height="20" fill="none" stroke="#EF4444" strokeWidth="2" />
+                                        <text x="100" y="35" textAnchor="middle" fill="#EF4444" fontSize="10">Rₐ</text>
+                                        
+                                        <line x1="120" y1="50" x2="160" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* Xs - 同期リアクタンス */}
+                                        {motor.id === 'salientPole' ? (
+                                            <>
+                                                <path d="M160,50 Q175,35 190,50 Q205,65 220,50 Q235,35 250,50 Q265,65 280,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                                                <text x="220" y="30" textAnchor="middle" fill="#F59E0B" fontSize="10">jXd (直軸)</text>
+                                                <text x="220" y="75" textAnchor="middle" fill="#F59E0B" fontSize="9" opacity="0.7">jXq (横軸)</text>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <path d="M160,50 Q175,35 190,50 Q205,65 220,50 Q235,35 250,50 Q265,65 280,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                                                <text x="220" y="30" textAnchor="middle" fill="#F59E0B" fontSize="10">jXs</text>
+                                            </>
+                                        )}
+                                        
+                                        <line x1="280" y1="50" x2="350" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* 誘起電圧 E */}
+                                        <circle cx="380" cy="50" r="25" fill="none" stroke="#22C55E" strokeWidth="2" />
+                                        <text x="380" y="55" textAnchor="middle" fill="#22C55E" fontSize="14" fontWeight="bold">E</text>
+                                        <text x="380" y="90" textAnchor="middle" fill="#22C55E" fontSize="9">誘起電圧</text>
+                                        
+                                        <line x1="405" y1="50" x2="450" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* 界磁回路（DC励磁） */}
+                                        <rect x="450" y="30" width="100" height="60" fill="#374151" stroke="#A855F7" strokeWidth="2" rx="4" />
+                                        <text x="500" y="55" textAnchor="middle" fill="#A855F7" fontSize="10">界磁回路</text>
+                                        <text x="500" y="70" textAnchor="middle" fill="#A855F7" fontSize="9">(DC励磁)</text>
+                                        
+                                        <line x1="550" y1="60" x2="560" y2="60" stroke="#9CA3AF" strokeWidth="2" />
+                                        <line x1="560" y1="60" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                                        <line x1="40" y1="170" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                                        
+                                        {/* 凡例 */}
+                                        <text x="20" y="200" fill="#9CA3AF" fontSize="9">
+                                            <tspan fill="#EF4444">Rₐ</tspan>:電機子抵抗 
+                                            <tspan fill="#F59E0B">{motor.id === 'salientPole' ? 'Xd,Xq' : 'Xs'}</tspan>:{motor.id === 'salientPole' ? '直軸・横軸リアクタンス' : '同期リアクタンス'} 
+                                            <tspan fill="#22C55E">E</tspan>:誘起電圧 
+                                            <tspan fill="#A855F7">界磁</tspan>:DC励磁
+                                        </text>
+                                        
+                                        {motor.id === 'salientPole' && (
+                                            <text x="20" y="215" fill="#9CA3AF" fontSize="8">
+                                                ※突極型はXd ≠ Xq（磁気的非対称性）
+                                            </text>
+                                        )}
+                                    </svg>
+                                    
+                                    <div style={{marginTop: '10px', fontSize: '0.8rem', color: '#3B82F6', backgroundColor: '#374151', padding: '10px', borderRadius: '6px'}}>
+                                        💡 同期機は自己始動できないため、ダンパ巻線で誘導機として始動→同期引入れ、またはインバータ始動が必要です。
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     )}
 
