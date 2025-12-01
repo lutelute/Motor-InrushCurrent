@@ -4,361 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>モーター突入電流シミュレーター</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/recharts@2.8.0/umd/Recharts.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
             color: white;
-        }
-        .min-h-screen {
             min-height: 100vh;
         }
-        .bg-gray-900 {
-            background-color: #111827;
-        }
-        .text-gray-100 {
-            color: #f9fafb;
-        }
-        .p-4 {
-            padding: 1rem;
-        }
-        .text-2xl {
-            font-size: 1.5rem;
-            line-height: 2rem;
-        }
-        .font-bold {
-            font-weight: 700;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .mb-2 {
-            margin-bottom: 0.5rem;
-        }
-        .text-blue-400 {
-            color: #60a5fa;
-        }
-        .mb-4 {
-            margin-bottom: 1rem;
-        }
-        .flex {
-            display: flex;
-        }
-        .flex-wrap {
-            flex-wrap: wrap;
-        }
-        .gap-1 {
-            gap: 0.25rem;
-        }
-        .bg-gray-800 {
-            background-color: #1f2937;
-        }
-        .p-2 {
-            padding: 0.5rem;
-        }
-        .rounded-lg {
-            border-radius: 0.5rem;
-        }
-        .px-3 {
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-        }
-        .py-2 {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-        }
-        .rounded {
-            border-radius: 0.25rem;
-        }
-        .text-sm {
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-        }
-        .transition-all {
-            transition-property: all;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 150ms;
-        }
-        .bg-blue-600 {
-            background-color: #2563eb;
-        }
-        .text-white {
-            color: #ffffff;
-        }
-        .bg-gray-700 {
-            background-color: #374151;
-        }
-        .text-gray-300 {
-            color: #d1d5db;
-        }
-        .hover\:bg-gray-600:hover {
-            background-color: #4b5563;
-        }
-        .text-xs {
-            font-size: 0.75rem;
-            line-height: 1rem;
-        }
-        .opacity-75 {
-            opacity: 0.75;
-        }
-        .border-l-4 {
-            border-left-width: 4px;
-        }
-        .border-blue-500 {
-            border-color: #3b82f6;
-        }
-        .items-start {
-            align-items: flex-start;
-        }
-        .gap-4 {
-            gap: 1rem;
-        }
-        .w-32 {
-            width: 8rem;
-        }
-        .h-32 {
-            height: 8rem;
-        }
-        .flex-1 {
-            flex: 1 1 0%;
-        }
-        .min-w-64 {
-            min-width: 16rem;
-        }
-        .text-xl {
-            font-size: 1.25rem;
-            line-height: 1.75rem;
-        }
-        .mb-1 {
-            margin-bottom: 0.25rem;
-        }
-        .text-gray-300 {
-            color: #d1d5db;
-        }
-        .mb-3 {
-            margin-bottom: 0.75rem;
-        }
-        .grid {
-            display: grid;
-        }
-        .grid-cols-2 {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .text-gray-400 {
-            color: #9ca3af;
-        }
-        .space-y-1 > :not([hidden]) ~ :not([hidden]) {
-            margin-top: 0.25rem;
-        }
-        .mt-3 {
-            margin-top: 0.75rem;
-        }
-        .justify-between {
-            justify-content: space-between;
-        }
-        .text-yellow-400 {
-            color: #facc15;
-        }
-        .font-mono {
-            font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-        }
-        .text-green-400 {
-            color: #4ade80;
-        }
-        .md\:grid-cols-4 {
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-        }
-        .gap-3 {
-            gap: 0.75rem;
-        }
-        .block {
-            display: block;
-        }
-        .w-full {
-            width: 100%;
-        }
-        .accent-blue-500::-webkit-slider-thumb {
-            accent-color: #3b82f6;
-        }
-        .text-blue-300 {
-            color: #93c5fd;
-        }
-        .bg-gray-700 {
-            background-color: #374151;
-        }
-        .px-2 {
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-        }
-        .py-1 {
-            padding-top: 0.25rem;
-            padding-bottom: 0.25rem;
-        }
-        .accent-gray-500::-webkit-slider-thumb {
-            accent-color: #6b7280;
-        }
-        .text-gray-300 {
-            color: #d1d5db;
-        }
-        .accent-purple-500::-webkit-slider-thumb {
-            accent-color: #8b5cf6;
-        }
-        .text-purple-300 {
-            color: #c4b5fd;
-        }
-        .accent-pink-500::-webkit-slider-thumb {
-            accent-color: #ec4899;
-        }
-        .text-pink-300 {
-            color: #f9a8d4;
-        }
-        .accent-green-500::-webkit-slider-thumb {
-            accent-color: #22c55e;
-        }
-        .text-green-300 {
-            color: #86efac;
-        }
-        .items-end {
-            align-items: flex-end;
-        }
-        .gap-2 {
-            gap: 0.5rem;
-        }
-        .cursor-pointer {
-            cursor: pointer;
-        }
-        .w-4 {
-            width: 1rem;
-        }
-        .h-4 {
-            height: 1rem;
-        }
-        .md\:grid-cols-5 {
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-        }
-        .gap-2 {
-            gap: 0.5rem;
-        }
-        .p-3 {
-            padding: 0.75rem;
-        }
-        .text-lg {
-            font-size: 1.125rem;
-            line-height: 1.75rem;
-        }
-        .text-green-400 {
-            color: #4ade80;
-        }
-        .text-green-300 {
-            color: #86efac;
-        }
-        .text-red-400 {
-            color: #f87171;
-        }
-        .text-red-300 {
-            color: #fca5a5;
-        }
-        .border {
-            border-width: 1px;
-        }
-        .border-green-600 {
-            border-color: #16a34a;
-        }
-        .text-md {
-            font-size: 1rem;
-        }
-        .text-green-400 {
-            color: #4ade80;
-        }
-        .mr-2 {
-            margin-right: 0.5rem;
-        }
-        .bg-red-600 {
-            background-color: #dc2626;
-        }
-        .bg-green-600 {
-            background-color: #16a34a;
-        }
-        .mt-2 {
-            margin-top: 0.5rem;
-        }
-        .text-purple-300 {
-            color: #c4b5fd;
-        }
-        .bg-gray-700 {
-            background-color: #374151;
-        }
-        .text-blue-300 {
-            color: #93c5fd;
-        }
-        .text-semibold {
-            font-weight: 600;
-        }
-        .max-w-2xl {
-            max-width: 42rem;
-        }
-        .mx-auto {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .overflow-x-auto {
-            overflow-x: auto;
-        }
-        .border-b {
-            border-bottom-width: 1px;
-        }
-        .border-gray-600 {
-            border-color: #4b5563;
-        }
-        .text-left {
-            text-align: left;
-        }
-        .border-gray-700 {
-            border-color: #374151;
-        }
-        .hover\:bg-gray-700:hover {
-            background-color: #374151;
-        }
-        .cursor-pointer {
-            cursor: pointer;
-        }
-        .font-semibold {
-            font-weight: 600;
-        }
-        .h-96 {
-            height: 24rem;
-        }
-        .w-auto {
-            width: auto;
-        }
-        .h-auto {
-            height: auto;
-        }
-        .max-w-4xl {
-            max-width: 56rem;
-        }
-        .mt-6 {
-            margin-top: 1.5rem;
-        }
-        .bg-red-900 {
-            background-color: #7f1d1d;
-        }
-        .border-red-400 {
-            border-color: #f87171;
-        }
-        @media (min-width: 768px) {
-            .md\:grid-cols-4 {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-            }
-            .md\:grid-cols-5 {
-                grid-template-columns: repeat(5, minmax(0, 1fr));
-            }
+        .container { padding: 1rem; max-width: 1200px; margin: 0 auto; }
+        .card { background: #1f2937; padding: 1rem; margin: 1rem 0; border-radius: 8px; border-left: 4px solid #3b82f6; }
+        .grid { display: grid; gap: 1rem; }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .flex { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+        .btn {
+            padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem;
+            background: #374151; color: #d1d5db; transition: all 0.2s;
+        }
+        .btn-active { background: #2563eb; color: white; }
+        .btn:hover { background: #4b5563; }
+        .input-group { display: flex; flex-direction: column; gap: 0.25rem; }
+        .input-group label { font-size: 0.75rem; color: #9ca3af; }
+        .input-group input, .input-group select {
+            padding: 0.25rem 0.5rem; border-radius: 4px; border: none;
+            background: #374151; color: white; font-size: 0.875rem;
+        }
+        .stat-box {
+            background: #1f2937; padding: 1rem; border-radius: 6px; text-align: center;
+            border: 1px solid #374151;
+        }
+        .stat-label { font-size: 0.75rem; color: #9ca3af; margin-bottom: 0.25rem; }
+        .stat-value { font-size: 1.125rem; font-weight: bold; }
+        .text-blue { color: #60a5fa; }
+        .text-green { color: #4ade80; }
+        .text-red { color: #f87171; }
+        .text-yellow { color: #facc15; }
+        .text-purple { color: #c084fc; }
+        .chart-container { background: #1f2937; padding: 1rem; border-radius: 8px; height: 400px; }
+        h1 { text-align: center; margin: 1rem 0; color: #60a5fa; font-size: 1.5rem; }
+        h2 { color: #60a5fa; margin-bottom: 0.5rem; }
+        h3 { color: #60a5fa; margin-bottom: 1rem; }
+        .motor-info { display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap; }
+        .motor-diagram { width: 120px; height: 120px; flex-shrink: 0; }
+        .motor-details { flex: 1; min-width: 200px; }
+        .feature-list { list-style: none; font-size: 0.8rem; }
+        .feature-list li { margin: 0.25rem 0; color: #d1d5db; }
+        .feature-list li:before { content: "• "; color: #60a5fa; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.5rem; text-align: left; border-bottom: 1px solid #374151; }
+        th { color: #9ca3af; font-size: 0.875rem; }
+        tr:hover { background: #374151; }
+        @media (max-width: 768px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .grid-2 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -369,7 +72,7 @@
         const { useState, useMemo } = React;
         const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ReferenceArea } = Recharts;
 
-        // モーター種類の定義
+        // モーター種類定義
         const MOTOR_TYPES = {
             squirrelCage: {
                 id: 'squirrelCage',
@@ -421,261 +124,53 @@
             },
         };
 
-        // かご型回転子の図
-        const CageRotorDiagram = () => (
-            <svg viewBox="0 0 200 200" className="w-32 h-32">
-                <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
-                <circle cx="100" cy="100" r="60" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
-                {/* 導体バー */}
-                {[...Array(12)].map((_, i) => {
-                    const angle = (i * 30 * Math.PI) / 180;
-                    const x1 = 100 + 60 * Math.cos(angle);
-                    const y1 = 100 + 60 * Math.sin(angle);
-                    const x2 = 100 + 78 * Math.cos(angle);
-                    const y2 = 100 + 78 * Math.sin(angle);
-                    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#F59E0B" strokeWidth="4" />;
-                })}
-                {/* エンドリング */}
-                <circle cx="100" cy="100" r="60" fill="none" stroke="#F59E0B" strokeWidth="3" />
-                <circle cx="100" cy="100" r="78" fill="none" stroke="#F59E0B" strokeWidth="3" />
-                <circle cx="100" cy="100" r="15" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
-                <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">かご型回転子</text>
-            </svg>
-        );
-
-        // 巻線型回転子の図
-        const WoundRotorDiagram = () => (
-            <svg viewBox="0 0 200 200" className="w-32 h-32">
-                <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
-                <circle cx="100" cy="100" r="60" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
-                {/* 三相巻線 */}
-                {[0, 120, 240].map((deg, i) => {
-                    const colors = ['#EF4444', '#22C55E', '#3B82F6'];
-                    const angle = (deg * Math.PI) / 180;
-                    return (
-                        <g key={i}>
-                            <path
-                                d={`M${100 + 30 * Math.cos(angle)},${100 + 30 * Math.sin(angle)} 
-                                    Q${100 + 50 * Math.cos(angle + 0.3)},${100 + 50 * Math.sin(angle + 0.3)} 
-                                    ${100 + 70 * Math.cos(angle)},${100 + 70 * Math.sin(angle)}`}
-                                fill="none" stroke={colors[i]} strokeWidth="3"
-                            />
-                            <path
-                                d={`M${100 + 30 * Math.cos(angle + Math.PI)},${100 + 30 * Math.sin(angle + Math.PI)} 
-                                    Q${100 + 50 * Math.cos(angle + Math.PI - 0.3)},${100 + 50 * Math.sin(angle + Math.PI - 0.3)} 
-                                    ${100 + 70 * Math.cos(angle + Math.PI)},${100 + 70 * Math.sin(angle + Math.PI)}`}
-                                fill="none" stroke={colors[i]} strokeWidth="3"
-                            />
-                        </g>
-                    );
-                })}
-                <circle cx="100" cy="100" r="20" fill="none" stroke="#F59E0B" strokeWidth="4" />
-                <circle cx="100" cy="100" r="12" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
-                <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">巻線型回転子</text>
-            </svg>
-        );
-
-        // 突極型回転子の図
-        const SalientPoleDiagram = () => (
-            <svg viewBox="0 0 200 200" className="w-32 h-32">
-                <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
-                {[0, 90, 180, 270].map((deg, i) => {
-                    const angle = (deg * Math.PI) / 180;
-                    const x = 100 + 45 * Math.cos(angle);
-                    const y = 100 + 45 * Math.sin(angle);
-                    return (
-                        <g key={i}>
-                            <rect
-                                x={x - 15} y={y - 25}
-                                width="30" height="50"
-                                fill="#1F2937" stroke="#EC4899" strokeWidth="2"
-                                transform={`rotate(${deg}, ${x}, ${y})`}
-                            />
-                            <rect
-                                x={x - 10} y={y - 20}
-                                width="20" height="40"
-                                fill="none" stroke="#F59E0B" strokeWidth="2"
-                                transform={`rotate(${deg}, ${x}, ${y})`}
-                            />
-                        </g>
-                    );
-                })}
-                <circle cx="100" cy="100" r="25" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
-                <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">突極型回転子</text>
-            </svg>
-        );
-
-        // 円筒型回転子の図
-        const CylindricalRotorDiagram = () => (
-            <svg viewBox="0 0 200 200" className="w-32 h-32">
-                <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
-                <circle cx="100" cy="100" r="65" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
-                {[...Array(24)].map((_, i) => {
-                    const angle = (i * 15 * Math.PI) / 180;
-                    const x1 = 100 + 40 * Math.cos(angle);
-                    const y1 = 100 + 40 * Math.sin(angle);
-                    const x2 = 100 + 63 * Math.cos(angle);
-                    const y2 = 100 + 63 * Math.sin(angle);
-                    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#F59E0B" strokeWidth="2" />;
-                })}
-                <circle cx="100" cy="100" r="40" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
-                <circle cx="100" cy="100" r="15" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
-                <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">円筒型回転子</text>
-            </svg>
-        );
-
-        // 回転子図のコンポーネント選択
+        // 回転子図
         const RotorDiagram = ({ type }) => {
-            switch (type) {
-                case 'cage': return <CageRotorDiagram />;
-                case 'wound': return <WoundRotorDiagram />;
-                case 'salient': return <SalientPoleDiagram />;
-                case 'cylindrical': return <CylindricalRotorDiagram />;
-                default: return <CageRotorDiagram />;
-            }
+            return (
+                <svg viewBox="0 0 120 120" className="motor-diagram">
+                    <circle cx="60" cy="60" r="50" fill="#374151" stroke="#6B7280" strokeWidth="2" />
+                    {type === 'cage' && (
+                        <>
+                            {[...Array(12)].map((_, i) => {
+                                const angle = (i * 30 * Math.PI) / 180;
+                                const x1 = 60 + 35 * Math.cos(angle);
+                                const y1 = 60 + 35 * Math.sin(angle);
+                                const x2 = 60 + 47 * Math.cos(angle);
+                                const y2 = 60 + 47 * Math.sin(angle);
+                                return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#F59E0B" strokeWidth="2" />;
+                            })}
+                            <circle cx="60" cy="60" r="35" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                            <circle cx="60" cy="60" r="47" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                        </>
+                    )}
+                    {type === 'wound' && (
+                        <>
+                            {[0, 120, 240].map((deg, i) => {
+                                const colors = ['#EF4444', '#22C55E', '#3B82F6'];
+                                const angle = (deg * Math.PI) / 180;
+                                return (
+                                    <g key={i}>
+                                        <path
+                                            d={`M${60 + 20 * Math.cos(angle)},${60 + 20 * Math.sin(angle)} 
+                                                Q${60 + 35 * Math.cos(angle + 0.3)},${60 + 35 * Math.sin(angle + 0.3)} 
+                                                ${60 + 45 * Math.cos(angle)},${60 + 45 * Math.sin(angle)}`}
+                                            fill="none" stroke={colors[i]} strokeWidth="2"
+                                        />
+                                    </g>
+                                );
+                            })}
+                        </>
+                    )}
+                    <circle cx="60" cy="60" r="10" fill="#4B5563" stroke="#6B7280" strokeWidth="1" />
+                    <text x="60" y="110" textAnchor="middle" fill="#9CA3AF" fontSize="8">
+                        {type === 'cage' && 'かご型'}
+                        {type === 'wound' && '巻線型'}
+                        {type === 'salient' && '突極型'}
+                        {type === 'cylindrical' && '円筒型'}
+                    </text>
+                </svg>
+            );
         };
-
-        // 誘導機等価回路
-        const InductionMotorCircuit = ({ slip = 1, hasExternalResistor = false }) => (
-            <div className="w-full max-w-4xl mx-auto">
-                <svg viewBox="0 0 600 220" className="w-full h-auto">
-                    <rect x="0" y="0" width="600" height="220" fill="#1F2937" rx="8" />
-                    
-                    {/* 電源 */}
-                    <circle cx="40" cy="110" r="18" fill="none" stroke="#3B82F6" strokeWidth="2" />
-                    <text x="40" y="115" textAnchor="middle" fill="#3B82F6" fontSize="12" fontWeight="bold">V</text>
-                    
-                    {/* 回路線 */}
-                    <line x1="40" y1="92" x2="40" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    <line x1="40" y1="128" x2="40" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                    <line x1="40" y1="50" x2="80" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* R1 */}
-                    <rect x="80" y="40" width="40" height="20" fill="none" stroke="#EF4444" strokeWidth="2" />
-                    <text x="100" y="35" textAnchor="middle" fill="#EF4444" fontSize="10">R₁</text>
-                    <line x1="120" y1="50" x2="150" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* X1 */}
-                    <path d="M150,50 Q160,40 170,50 Q180,60 190,50 Q200,40 210,50" 
-                        fill="none" stroke="#F59E0B" strokeWidth="2" />
-                    <text x="180" y="35" textAnchor="middle" fill="#F59E0B" fontSize="10">jX₁</text>
-                    <line x1="210" y1="50" x2="250" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* 分岐点 */}
-                    <circle cx="250" cy="50" r="3" fill="#9CA3AF" />
-                    
-                    {/* 励磁回路 */}
-                    <line x1="250" y1="50" x2="250" y2="80" stroke="#9CA3AF" strokeWidth="2" />
-                    <path d="M250,80 Q240,90 250,100 Q260,110 250,120 Q240,130 250,140" 
-                        fill="none" stroke="#22C55E" strokeWidth="2" />
-                    <text x="230" y="115" textAnchor="end" fill="#22C55E" fontSize="9">jXₘ</text>
-                    <line x1="250" y1="140" x2="250" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* 回転子回路 */}
-                    <line x1="250" y1="50" x2="300" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* X2' */}
-                    <path d="M300,50 Q310,40 320,50 Q330,60 340,50 Q350,40 360,50" 
-                        fill="none" stroke="#F59E0B" strokeWidth="2" />
-                    <text x="330" y="35" textAnchor="middle" fill="#F59E0B" fontSize="10">jX₂'</text>
-                    <line x1="360" y1="50" x2="400" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* R2'/s */}
-                    <rect x="400" y="40" width="50" height="20" fill="none" stroke="#EC4899" strokeWidth="2" />
-                    <text x="425" y="35" textAnchor="middle" fill="#EC4899" fontSize="10">R₂'/s</text>
-                    <line x1="450" y1="50" x2="480" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* 外部抵抗（巻線型の場合） */}
-                    {hasExternalResistor && (
-                        <>
-                            <rect x="480" y="40" width="40" height="20" fill="none" 
-                                stroke="#A855F7" strokeWidth="2" strokeDasharray="4,2" />
-                            <text x="500" y="35" textAnchor="middle" fill="#A855F7" fontSize="10">R_ext</text>
-                            <line x1="520" y1="50" x2="560" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                            <line x1="560" y1="50" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                        </>
-                    )}
-                    {!hasExternalResistor && (
-                        <>
-                            <line x1="480" y1="50" x2="560" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                            <line x1="560" y1="50" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                        </>
-                    )}
-                    
-                    <line x1="40" y1="170" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* スリップ表示 */}
-                    <rect x="400" y="70" width="80" height="30" fill="#374151" rx="4" />
-                    <text x="440" y="85" textAnchor="middle" fill="#9CA3AF" fontSize="9">s = {slip}</text>
-                    <text x="440" y="96" textAnchor="middle" fill="#EC4899" fontSize="8">
-                        {slip === 1 ? '(停止)' : '(定格)'}
-                    </text>
-                    
-                    {/* 回路名 */}
-                    <text x="300" y="210" textAnchor="middle" fill="#9CA3AF" fontSize="14" fontWeight="bold">
-                        誘導機等価回路
-                    </text>
-                </svg>
-            </div>
-        );
-
-        // 同期機等価回路
-        const SynchronousMotorCircuit = () => (
-            <div className="w-full max-w-4xl mx-auto">
-                <svg viewBox="0 0 600 220" className="w-full h-auto">
-                    <rect x="0" y="0" width="600" height="220" fill="#1F2937" rx="8" />
-                    
-                    {/* 電源 */}
-                    <circle cx="40" cy="110" r="18" fill="none" stroke="#3B82F6" strokeWidth="2" />
-                    <text x="40" y="115" textAnchor="middle" fill="#3B82F6" fontSize="12" fontWeight="bold">V</text>
-                    
-                    {/* 回路線 */}
-                    <line x1="40" y1="92" x2="40" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    <line x1="40" y1="128" x2="40" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                    <line x1="40" y1="50" x2="80" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* Ra (電機子抵抗) */}
-                    <rect x="80" y="40" width="40" height="20" fill="none" stroke="#EF4444" strokeWidth="2" />
-                    <text x="100" y="35" textAnchor="middle" fill="#EF4444" fontSize="10">Rₐ</text>
-                    <line x1="120" y1="50" x2="150" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* Xs (同期リアクタンス) */}
-                    <path d="M150,50 Q160,40 170,50 Q180,60 190,50 Q200,40 210,50 Q220,60 230,50 Q240,40 250,50" 
-                        fill="none" stroke="#F59E0B" strokeWidth="2" />
-                    <text x="200" y="35" textAnchor="middle" fill="#F59E0B" fontSize="10">jXₛ</text>
-                    <line x1="250" y1="50" x2="300" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* 内部起電力 E */}
-                    <circle cx="350" cy="110" r="25" fill="none" stroke="#22C55E" strokeWidth="2" />
-                    <text x="350" y="115" textAnchor="middle" fill="#22C55E" fontSize="12" fontWeight="bold">E</text>
-                    <line x1="300" y1="50" x2="350" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    <line x1="350" y1="85" x2="350" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                    <line x1="350" y1="135" x2="350" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    <line x1="40" y1="170" x2="350" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                    
-                    {/* ダンパ巻線回路 */}
-                    <line x1="300" y1="50" x2="300" y2="85" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="3,3" />
-                    <rect x="280" y="85" width="40" height="15" fill="none" stroke="#EC4899" strokeWidth="1.5" strokeDasharray="2,2" />
-                    <text x="300" y="96" textAnchor="middle" fill="#EC4899" fontSize="8">ダンパ</text>
-                    <line x1="300" y1="100" x2="300" y2="120" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="3,3" />
-                    <rect x="280" y="120" width="40" height="15" fill="none" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="2,2" />
-                    <text x="300" y="131" textAnchor="middle" fill="#F59E0B" fontSize="8">巻線</text>
-                    <line x1="300" y1="135" x2="300" y2="170" stroke="#9CA3AF" strokeWidth="2" strokeDasharray="3,3" />
-                    
-                    {/* 説明テキスト */}
-                    <text x="450" y="80" fill="#9CA3AF" fontSize="11">同期運転時：E ∠ δ</text>
-                    <text x="450" y="95" fill="#EC4899" fontSize="9">始動時：ダンパ巻線有効</text>
-                    <text x="450" y="110" fill="#22C55E" fontSize="9">E: 界磁電流により決定</text>
-                    <text x="450" y="125" fill="#F59E0B" fontSize="9">δ: 負荷角（トルク角）</text>
-                    
-                    {/* 回路名 */}
-                    <text x="300" y="210" textAnchor="middle" fill="#9CA3AF" fontSize="14" fontWeight="bold">
-                        同期機等価回路
-                    </text>
-                </svg>
-            </div>
-        );
 
         function MotorInrushSimulator() {
             const [selectedMotor, setSelectedMotor] = useState('squirrelCage');
@@ -685,12 +180,8 @@
             const [switchingAngle, setSwitchingAngle] = useState(0);
             const [dcTimeConstant, setDcTimeConstant] = useState(50);
             const [viewCycles, setViewCycles] = useState(10);
-            const [stopTime, setStopTime] = useState(50);
-            const [showEnvelope, setShowEnvelope] = useState(true);
-            const [showCircuit, setShowCircuit] = useState(false);
 
             const motor = MOTOR_TYPES[selectedMotor];
-            const { inrushMultiplier } = motor;
 
             // シミュレーションデータ計算
             const simulationData = useMemo(() => {
@@ -702,48 +193,24 @@
                 const powerFactor = 0.85;
                 const ratedCurrent = (ratedPower * 1000) / (Math.sqrt(3) * ratedVoltage * powerFactor);
                 const peakRated = ratedCurrent * Math.sqrt(2);
-                const peakInrush = peakRated * inrushMultiplier;
+                const peakInrush = peakRated * motor.inrushMultiplier;
                 
                 const phi0 = (switchingAngle * Math.PI) / 180;
                 const tau = dcTimeConstant / 1000;
-                
-                // AC成分の時定数（モーター種類により異なる）
                 const tauAC = motor.category === '同期機' ? 0.5 : 0.3;
                 
                 const data = [];
                 let maxCurrent = 0;
 
                 for (let t = 0; t <= endTime; t += timeStep) {
-                    const isPowered = t >= stopTime / 1000;
-                    
-                    if (!isPowered) {
-                        data.push({
-                            time: parseFloat((t * 1000).toFixed(1)),
-                            iU: 0, iV: 0, iW: 0,
-                            envPos: 0, envNeg: 0,
-                            dcU: 0, peakRated: parseFloat(peakRated.toFixed(1))
-                        });
-                        continue;
-                    }
-                    
-                    const tPowered = t - stopTime / 1000;
-                    
-                    // DC成分
-                    const dcU = peakInrush * Math.sin(phi0) * Math.exp(-tPowered / tau);
-                    
-                    // AC成分（減衰を考慮）
-                    const acDecay = Math.exp(-tPowered / tauAC);
+                    const dcU = peakInrush * Math.sin(phi0) * Math.exp(-t / tau);
+                    const acDecay = Math.exp(-t / tauAC);
                     const inrushComponent = (peakInrush - peakRated) * acDecay;
                     const currentAmplitude = peakRated + inrushComponent;
                     
-                    // 三相電流
-                    const iU = currentAmplitude * Math.sin(omega * tPowered + phi0) + dcU;
-                    const iV = currentAmplitude * Math.sin(omega * tPowered + phi0 - 2 * Math.PI / 3);
-                    const iW = currentAmplitude * Math.sin(omega * tPowered + phi0 + 2 * Math.PI / 3);
-                    
-                    // 包絡線
-                    const envelopeU_pos = currentAmplitude + Math.abs(dcU);
-                    const envelopeU_neg = -(currentAmplitude + Math.abs(dcU));
+                    const iU = currentAmplitude * Math.sin(omega * t + phi0) + dcU;
+                    const iV = currentAmplitude * Math.sin(omega * t + phi0 - 2 * Math.PI / 3);
+                    const iW = currentAmplitude * Math.sin(omega * t + phi0 + 2 * Math.PI / 3);
                     
                     maxCurrent = Math.max(maxCurrent, Math.abs(iU), Math.abs(iV), Math.abs(iW));
                     
@@ -752,15 +219,12 @@
                         iU: parseFloat(iU.toFixed(1)),
                         iV: parseFloat(iV.toFixed(1)),
                         iW: parseFloat(iW.toFixed(1)),
-                        envPos: parseFloat(envelopeU_pos.toFixed(1)),
-                        envNeg: parseFloat(envelopeU_neg.toFixed(1)),
                         dcU: parseFloat(dcU.toFixed(1)),
-                        peakRated: parseFloat(peakRated.toFixed(1)),
                     });
                 }
                 
-                return { data, ratedCurrent, peakRated, peakInrush, maxCurrent, stopTimeMs: stopTime };
-            }, [ratedPower, ratedVoltage, frequency, inrushMultiplier, switchingAngle, dcTimeConstant, viewCycles, stopTime, motor]);
+                return { data, ratedCurrent, peakRated, peakInrush, maxCurrent };
+            }, [ratedPower, ratedVoltage, frequency, motor.inrushMultiplier, switchingAngle, dcTimeConstant, viewCycles, motor.category]);
 
             const getPhaseDescription = (angle) => {
                 if (angle === 0 || angle === 180) return 'DC成分最小';
@@ -769,58 +233,51 @@
             };
 
             return (
-                <div className="min-h-screen bg-gray-900 text-gray-100 p-4">
-                    <h1 className="text-2xl font-bold text-center mb-2 text-blue-400">
-                        モーター始動時 突入電流シミュレーション
-                    </h1>
+                <div className="container">
+                    <h1>モーター始動時 突入電流シミュレーション</h1>
                     
-                    {/* モーター種類タブ */}
-                    <div className="mb-4">
-                        <div className="flex flex-wrap gap-1 bg-gray-800 p-2 rounded-lg">
+                    {/* モーター種類選択 */}
+                    <div className="card">
+                        <div className="flex">
                             {Object.values(MOTOR_TYPES).map((m) => (
                                 <button
                                     key={m.id}
                                     onClick={() => setSelectedMotor(m.id)}
-                                    className={`px-3 py-2 rounded text-sm transition-all ${
-                                        selectedMotor === m.id
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                                    }`}
+                                    className={`btn ${selectedMotor === m.id ? 'btn-active' : ''}`}
                                 >
-                                    <div className="font-semibold">{m.name}</div>
-                                    <div className="text-xs opacity-75">{m.category}</div>
+                                    {m.name}
                                 </button>
                             ))}
                         </div>
                     </div>
                     
-                    {/* 選択したモーターの情報 */}
-                    <div className="bg-gray-800 p-4 rounded-lg mb-4 border-l-4 border-blue-500">
-                        <div className="flex flex-wrap items-start gap-4">
+                    {/* モーター情報 */}
+                    <div className="card">
+                        <div className="motor-info">
                             <RotorDiagram type={motor.rotorType} />
-                            <div className="flex-1 min-w-64">
-                                <h2 className="text-xl font-bold text-blue-400 mb-1">{motor.name}</h2>
-                                <p className="text-sm text-gray-300 mb-3">{motor.description}</p>
-                                <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div className="motor-details">
+                                <h2>{motor.name} ({motor.category})</h2>
+                                <p style={{marginBottom: '1rem', color: '#d1d5db', fontSize: '0.9rem'}}>{motor.description}</p>
+                                <div className="grid grid-2">
                                     <div>
-                                        <div className="text-gray-400 text-xs mb-1">特徴</div>
-                                        <ul className="space-y-1">
+                                        <h3 style={{fontSize: '0.9rem', marginBottom: '0.5rem'}}>特徴</h3>
+                                        <ul className="feature-list">
                                             {motor.features.map((f, i) => (
-                                                <li key={i} className="text-xs text-gray-300">• {f}</li>
+                                                <li key={i}>{f}</li>
                                             ))}
                                         </ul>
                                     </div>
                                     <div>
-                                        <div className="text-gray-400 text-xs mb-1">用途</div>
-                                        <p className="text-xs text-gray-300">{motor.applications}</p>
-                                        <div className="mt-3 space-y-1">
-                                            <div className="flex justify-between text-xs">
-                                                <span className="text-gray-400">突入電流倍率:</span>
-                                                <span className="text-yellow-400 font-mono">{motor.inrushMultiplier}倍</span>
+                                        <h3 style={{fontSize: '0.9rem', marginBottom: '0.5rem'}}>用途</h3>
+                                        <p style={{fontSize: '0.8rem', color: '#d1d5db', marginBottom: '1rem'}}>{motor.applications}</p>
+                                        <div style={{fontSize: '0.8rem'}}>
+                                            <div style={{display: 'flex', justifyContent: 'space-between', margin: '0.25rem 0'}}>
+                                                <span>突入電流倍率:</span>
+                                                <span className="text-yellow">{motor.inrushMultiplier}倍</span>
                                             </div>
-                                            <div className="flex justify-between text-xs">
-                                                <span className="text-gray-400">始動トルク:</span>
-                                                <span className="text-green-400 font-mono">{motor.startTorque} p.u.</span>
+                                            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                                <span>始動トルク:</span>
+                                                <span className="text-green">{motor.startTorque} p.u.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -830,129 +287,83 @@
                     </div>
                     
                     {/* パラメータ設定 */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 bg-gray-800 p-4 rounded-lg">
-                        <div>
-                            <label className="block text-xs text-gray-400 mb-1">定格出力 [kW]</label>
-                            <input type="range" min="0.75" max="37" step="0.25" value={ratedPower}
-                                onChange={(e) => setRatedPower(parseFloat(e.target.value))} className="w-full accent-blue-500" />
-                            <span className="text-sm font-mono text-blue-300">{ratedPower} kW</span>
-                        </div>
-                        <div>
-                            <label className="block text-xs text-gray-400 mb-1">定格電圧 [V]</label>
-                            <select value={ratedVoltage} onChange={(e) => setRatedVoltage(parseInt(e.target.value))}
-                                className="w-full bg-gray-700 rounded px-2 py-1 text-sm">
-                                <option value={200}>200V</option>
-                                <option value={400}>400V</option>
-                                <option value={6600}>6.6kV</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block text-xs text-gray-400 mb-1">電源周波数 [Hz]</label>
-                            <select value={frequency} onChange={(e) => setFrequency(parseInt(e.target.value))}
-                                className="w-full bg-gray-700 rounded px-2 py-1 text-sm">
-                                <option value={50}>50Hz</option>
-                                <option value={60}>60Hz</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block text-xs text-gray-400 mb-1">停止時間 [ms]</label>
-                            <input type="range" min="0" max="100" step="10" value={stopTime}
-                                onChange={(e) => setStopTime(parseInt(e.target.value))} className="w-full accent-gray-500" />
-                            <span className="text-sm font-mono text-gray-300">{stopTime} ms</span>
-                        </div>
-                        <div>
-                            <label className="block text-xs text-gray-400 mb-1">投入位相角 [°]</label>
-                            <input type="range" min="0" max="360" step="15" value={switchingAngle}
-                                onChange={(e) => setSwitchingAngle(parseInt(e.target.value))} className="w-full accent-purple-500" />
-                            <span className="text-sm font-mono text-purple-300">{switchingAngle}° <span className="text-xs text-blue-400">{getPhaseDescription(switchingAngle)}</span></span>
-                        </div>
-                        <div>
-                            <label className="block text-xs text-gray-400 mb-1">DC減衰時定数 [ms]</label>
-                            <input type="range" min="10" max="200" step="5" value={dcTimeConstant}
-                                onChange={(e) => setDcTimeConstant(parseInt(e.target.value))} className="w-full accent-pink-500" />
-                            <span className="text-sm font-mono text-pink-300">{dcTimeConstant} ms</span>
-                        </div>
-                        <div>
-                            <label className="block text-xs text-gray-400 mb-1">表示サイクル数</label>
-                            <input type="range" min="3" max="30" step="1" value={viewCycles}
-                                onChange={(e) => setViewCycles(parseInt(e.target.value))} className="w-full accent-green-500" />
-                            <span className="text-sm font-mono text-green-300">{viewCycles} サイクル</span>
-                        </div>
-                        <div className="flex items-end gap-2">
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" checked={showEnvelope} onChange={(e) => setShowEnvelope(e.target.checked)}
-                                    className="w-4 h-4 accent-blue-500" />
-                                <span className="text-xs">包絡線</span>
-                            </label>
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" checked={showCircuit} onChange={(e) => setShowCircuit(e.target.checked)}
-                                    className="w-4 h-4 accent-green-500" />
-                                <span className="text-xs">等価回路</span>
-                            </label>
+                    <div className="card">
+                        <h3>パラメータ設定</h3>
+                        <div className="grid grid-4">
+                            <div className="input-group">
+                                <label>定格出力 [kW]</label>
+                                <input type="range" min="0.75" max="37" step="0.25" value={ratedPower}
+                                    onChange={(e) => setRatedPower(parseFloat(e.target.value))} />
+                                <span className="text-blue">{ratedPower} kW</span>
+                            </div>
+                            <div className="input-group">
+                                <label>定格電圧 [V]</label>
+                                <select value={ratedVoltage} onChange={(e) => setRatedVoltage(parseInt(e.target.value))}>
+                                    <option value={200}>200V</option>
+                                    <option value={400}>400V</option>
+                                    <option value={6600}>6.6kV</option>
+                                </select>
+                            </div>
+                            <div className="input-group">
+                                <label>電源周波数 [Hz]</label>
+                                <select value={frequency} onChange={(e) => setFrequency(parseInt(e.target.value))}>
+                                    <option value={50}>50Hz</option>
+                                    <option value={60}>60Hz</option>
+                                </select>
+                            </div>
+                            <div className="input-group">
+                                <label>投入位相角 [°]</label>
+                                <input type="range" min="0" max="360" step="15" value={switchingAngle}
+                                    onChange={(e) => setSwitchingAngle(parseInt(e.target.value))} />
+                                <span className="text-purple">{switchingAngle}° {getPhaseDescription(switchingAngle)}</span>
+                            </div>
+                            <div className="input-group">
+                                <label>DC減衰時定数 [ms]</label>
+                                <input type="range" min="10" max="200" step="5" value={dcTimeConstant}
+                                    onChange={(e) => setDcTimeConstant(parseInt(e.target.value))} />
+                                <span className="text-purple">{dcTimeConstant} ms</span>
+                            </div>
+                            <div className="input-group">
+                                <label>表示サイクル数</label>
+                                <input type="range" min="3" max="30" step="1" value={viewCycles}
+                                    onChange={(e) => setViewCycles(parseInt(e.target.value))} />
+                                <span className="text-green">{viewCycles} サイクル</span>
+                            </div>
                         </div>
                     </div>
                     
-                    {/* 計算結果サマリー */}
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-4">
-                        <div className="bg-gray-800 p-3 rounded text-center">
-                            <div className="text-xs text-gray-400">定格電流</div>
-                            <div className="text-lg font-bold text-green-400">{simulationData.ratedCurrent.toFixed(1)} A</div>
-                        </div>
-                        <div className="bg-gray-800 p-3 rounded text-center">
-                            <div className="text-xs text-gray-400">定格ピーク</div>
-                            <div className="text-lg font-bold text-green-300">{simulationData.peakRated.toFixed(1)} A</div>
-                        </div>
-                        <div className="bg-gray-800 p-3 rounded text-center">
-                            <div className="text-xs text-gray-400">突入ピーク</div>
-                            <div className="text-lg font-bold text-red-400">{simulationData.peakInrush.toFixed(1)} A</div>
-                        </div>
-                        <div className="bg-gray-800 p-3 rounded text-center">
-                            <div className="text-xs text-gray-400">最大電流</div>
-                            <div className="text-lg font-bold text-red-300">{simulationData.maxCurrent.toFixed(1)} A</div>
-                        </div>
-                        <div className="bg-gray-800 p-3 rounded text-center border border-green-600">
-                            <div className="text-xs text-gray-400">対定格比</div>
-                            <div className="text-md font-bold text-green-400">
-                                <span className="mr-2">×{(simulationData.maxCurrent / simulationData.ratedCurrent).toFixed(1)}</span>
+                    {/* 計算結果 */}
+                    <div className="card">
+                        <h3>計算結果</h3>
+                        <div className="grid grid-4">
+                            <div className="stat-box">
+                                <div className="stat-label">定格電流</div>
+                                <div className="stat-value text-green">{simulationData.ratedCurrent.toFixed(1)} A</div>
+                            </div>
+                            <div className="stat-box">
+                                <div className="stat-label">定格ピーク</div>
+                                <div className="stat-value text-green">{simulationData.peakRated.toFixed(1)} A</div>
+                            </div>
+                            <div className="stat-box">
+                                <div className="stat-label">突入ピーク</div>
+                                <div className="stat-value text-red">{simulationData.peakInrush.toFixed(1)} A</div>
+                            </div>
+                            <div className="stat-box">
+                                <div className="stat-label">最大電流</div>
+                                <div className="stat-value text-red">{simulationData.maxCurrent.toFixed(1)} A</div>
                             </div>
                         </div>
                     </div>
 
-                    {/* グラフ表示 */}
-                    <div className="bg-gray-800 p-4 rounded-lg mb-4">
-                        <div className="flex items-center gap-4 mb-3">
-                            <h3 className="text-lg font-bold text-blue-400">三相電流波形</h3>
-                            <div className="flex items-center gap-2 text-xs">
-                                <div className="flex items-center gap-1">
-                                    <div className="w-3 h-3 bg-red-600 rounded"></div>
-                                    <span>U相</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <div className="w-3 h-3 bg-green-600 rounded"></div>
-                                    <span>V相</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <div className="w-3 h-3 bg-blue-600 rounded"></div>
-                                    <span>W相</span>
-                                </div>
-                                {showEnvelope && (
-                                    <div className="flex items-center gap-1">
-                                        <div className="w-3 h-3 bg-purple-600 rounded"></div>
-                                        <span>包絡線</span>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="h-96">
+                    {/* 三相電流波形 */}
+                    <div className="card">
+                        <h3>三相電流波形</h3>
+                        <div className="chart-container">
                             <ResponsiveContainer width="100%" height="100%">
                                 <LineChart data={simulationData.data}>
                                     <CartesianGrid strokeDasharray="3,3" stroke="#374151" />
                                     <XAxis 
                                         dataKey="time" 
-                                        type="number" 
-                                        scale="linear" 
-                                        domain={['dataMin', 'dataMax']}
                                         tick={{ fill: '#9CA3AF', fontSize: 10 }}
                                         label={{ value: '時間 [ms]', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                                     />
@@ -966,41 +377,27 @@
                                     />
                                     <Legend />
                                     
-                                    <Line dataKey="iU" stroke="#EF4444" strokeWidth={1.5} dot={false} name="U相電流" />
-                                    <Line dataKey="iV" stroke="#22C55E" strokeWidth={1.5} dot={false} name="V相電流" />
-                                    <Line dataKey="iW" stroke="#3B82F6" strokeWidth={1.5} dot={false} name="W相電流" />
-                                    
-                                    {showEnvelope && (
-                                        <>
-                                            <Line dataKey="envPos" stroke="#8B5CF6" strokeWidth={1} strokeDasharray="5,5" dot={false} name="包絡線(+)" />
-                                            <Line dataKey="envNeg" stroke="#8B5CF6" strokeWidth={1} strokeDasharray="5,5" dot={false} name="包絡線(-)" />
-                                        </>
-                                    )}
+                                    <Line dataKey="iU" stroke="#EF4444" strokeWidth={2} dot={false} name="U相電流" />
+                                    <Line dataKey="iV" stroke="#22C55E" strokeWidth={2} dot={false} name="V相電流" />
+                                    <Line dataKey="iW" stroke="#3B82F6" strokeWidth={2} dot={false} name="W相電流" />
                                     
                                     <ReferenceLine y={0} stroke="#6B7280" strokeDasharray="2,2" />
-                                    <ReferenceLine y={simulationData.peakRated} stroke="#22C55E" strokeDasharray="3,3" label={{ value: "定格ピーク", position: "topLeft" }} />
+                                    <ReferenceLine y={simulationData.peakRated} stroke="#22C55E" strokeDasharray="3,3" />
                                     <ReferenceLine y={-simulationData.peakRated} stroke="#22C55E" strokeDasharray="3,3" />
-                                    
-                                    {simulationData.stopTimeMs > 0 && (
-                                        <ReferenceArea x1={0} x2={simulationData.stopTimeMs} fill="#7F1D1D" fillOpacity={0.3} />
-                                    )}
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
                     </div>
 
-                    {/* DC成分グラフ */}
-                    <div className="bg-gray-800 p-4 rounded-lg mb-4">
-                        <h3 className="text-lg font-bold text-purple-300 mb-3">DC成分の減衰</h3>
-                        <div className="h-64">
+                    {/* DC成分 */}
+                    <div className="card">
+                        <h3>DC成分の減衰</h3>
+                        <div className="chart-container">
                             <ResponsiveContainer width="100%" height="100%">
                                 <LineChart data={simulationData.data}>
                                     <CartesianGrid strokeDasharray="3,3" stroke="#374151" />
                                     <XAxis 
                                         dataKey="time" 
-                                        type="number" 
-                                        scale="linear" 
-                                        domain={['dataMin', 'dataMax']}
                                         tick={{ fill: '#9CA3AF', fontSize: 10 }}
                                         label={{ value: '時間 [ms]', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                                     />
@@ -1016,86 +413,41 @@
                                     
                                     <Line dataKey="dcU" stroke="#EC4899" strokeWidth={2} dot={false} name="U相 DC成分" />
                                     <ReferenceLine y={0} stroke="#6B7280" strokeDasharray="2,2" />
-                                    
-                                    {simulationData.stopTimeMs > 0 && (
-                                        <ReferenceArea x1={0} x2={simulationData.stopTimeMs} fill="#7F1D1D" fillOpacity={0.3} />
-                                    )}
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
-                        <div className="mt-2 text-xs text-gray-400">
-                            <span className="text-semibold text-blue-300">τ = {dcTimeConstant} ms</span>で指数的に減衰。投入位相角{switchingAngle}°でのDC成分を表示。
-                        </div>
                     </div>
-
-                    {/* 等価回路表示 */}
-                    {showCircuit && (
-                        <div className="bg-gray-800 p-4 rounded-lg mb-4">
-                            <h3 className="text-lg font-bold text-green-400 mb-3">等価回路</h3>
-                            {motor.category === '誘導機' ? (
-                                <InductionMotorCircuit 
-                                    slip={1} 
-                                    hasExternalResistor={motor.hasSlipRings} 
-                                />
-                            ) : (
-                                <SynchronousMotorCircuit />
-                            )}
-                        </div>
-                    )}
 
                     {/* モーター比較表 */}
-                    <div className="mt-6 bg-gray-800 p-4 rounded-lg max-w-2xl mx-auto">
-                        <h3 className="text-lg font-bold text-blue-400 mb-3 text-center">モーター種類比較</h3>
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                                <thead>
-                                    <tr className="border-b border-gray-600">
-                                        <th className="text-left p-2 text-gray-400">種類</th>
-                                        <th className="text-center p-2 text-gray-400">突入倍率</th>
-                                        <th className="text-center p-2 text-gray-400">始動トルク</th>
-                                        <th className="text-center p-2 text-gray-400">制御性</th>
+                    <div className="card">
+                        <h3>モーター種類比較</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>種類</th>
+                                    <th>突入倍率</th>
+                                    <th>始動トルク</th>
+                                    <th>制御性</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {Object.values(MOTOR_TYPES).map((m) => (
+                                    <tr key={m.id} onClick={() => setSelectedMotor(m.id)} style={{cursor: 'pointer'}}>
+                                        <td>
+                                            <div style={{fontWeight: 'bold', color: '#60a5fa'}}>{m.name}</div>
+                                            <div style={{fontSize: '0.75rem', color: '#9ca3af'}}>{m.category}</div>
+                                        </td>
+                                        <td className="text-yellow">{m.inrushMultiplier}×</td>
+                                        <td className="text-green">{m.startTorque}</td>
+                                        <td>{m.hasSlipRings ? 
+                                            <span className="text-green">◎ 良好</span> : 
+                                            <span className="text-yellow">△ 限定的</span>}
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {Object.values(MOTOR_TYPES).map((m) => (
-                                        <tr 
-                                            key={m.id} 
-                                            className={`border-b border-gray-700 hover:bg-gray-700 cursor-pointer ${
-                                                selectedMotor === m.id ? 'bg-gray-700' : ''
-                                            }`}
-                                            onClick={() => setSelectedMotor(m.id)}
-                                        >
-                                            <td className="p-2">
-                                                <div className="font-semibold text-blue-300">{m.name}</div>
-                                                <div className="text-xs text-gray-400">{m.category}</div>
-                                            </td>
-                                            <td className="text-center p-2 font-mono text-yellow-400">{m.inrushMultiplier}×</td>
-                                            <td className="text-center p-2 font-mono text-green-400">{m.startTorque}</td>
-                                            <td className="text-center p-2 text-xs">
-                                                {m.hasSlipRings ? (
-                                                    <span className="text-green-400">◎ 良好</span>
-                                                ) : (
-                                                    <span className="text-yellow-400">△ 限定的</span>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-
-                    {/* 警告メッセージ */}
-                    {simulationData.maxCurrent > simulationData.ratedCurrent * 8 && (
-                        <div className="mt-6 bg-red-900 border border-red-400 p-4 rounded-lg">
-                            <div className="text-red-400 font-bold text-center">
-                                ⚠️ 警告: 突入電流が定格の8倍を超えています ⚠️
-                            </div>
-                            <div className="text-red-300 text-sm text-center mt-2">
-                                実際の運用では保護装置の動作や電源設備への影響を検討してください
-                            </div>
-                        </div>
-                    )}
                 </div>
             );
         }
