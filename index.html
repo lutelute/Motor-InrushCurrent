@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>モーター突入電流シミュレーター</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/recharts@2.8.0/esm/index.js" type="module"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/recharts@2.8.0/umd/Recharts.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             margin: 0;
@@ -17,146 +16,317 @@
             background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
             color: white;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
+        .min-h-screen {
+            min-height: 100vh;
         }
-        .motor-card {
-            background: rgba(55, 65, 81, 0.9);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 4px solid #3B82F6;
+        .bg-gray-900 {
+            background-color: #111827;
         }
-        .parameter-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+        .text-gray-100 {
+            color: #f9fafb;
         }
-        .parameter-item {
-            background: rgba(75, 85, 99, 0.8);
-            padding: 15px;
-            border-radius: 8px;
+        .p-4 {
+            padding: 1rem;
         }
-        .parameter-item label {
-            display: block;
-            font-size: 0.8rem;
-            color: #9CA3AF;
-            margin-bottom: 8px;
+        .text-2xl {
+            font-size: 1.5rem;
+            line-height: 2rem;
         }
-        .parameter-item input, .parameter-item select {
-            width: 100%;
-            background: #374151;
-            border: none;
-            border-radius: 6px;
-            padding: 8px;
-            color: white;
-            font-size: 0.9rem;
+        .font-bold {
+            font-weight: 700;
         }
-        .motor-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            background: #374151;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        .motor-tab {
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-        .motor-tab.active {
-            background: #3B82F6;
-            color: white;
-        }
-        .motor-tab:not(.active) {
-            background: #4B5563;
-            color: #D1D5DB;
-        }
-        .motor-tab:hover:not(.active) {
-            background: #6B7280;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
-            background: #374151;
-            padding: 15px;
-            border-radius: 8px;
+        .text-center {
             text-align: center;
         }
-        .stat-value {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-top: 5px;
+        .mb-2 {
+            margin-bottom: 0.5rem;
         }
-        .chart-container {
-            background: #374151;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+        .text-blue-400 {
+            color: #60a5fa;
         }
-        .comparison-table {
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        .gap-1 {
+            gap: 0.25rem;
+        }
+        .bg-gray-800 {
+            background-color: #1f2937;
+        }
+        .p-2 {
+            padding: 0.5rem;
+        }
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+        .px-3 {
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+        }
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        .rounded {
+            border-radius: 0.25rem;
+        }
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        .bg-blue-600 {
+            background-color: #2563eb;
+        }
+        .text-white {
+            color: #ffffff;
+        }
+        .bg-gray-700 {
+            background-color: #374151;
+        }
+        .text-gray-300 {
+            color: #d1d5db;
+        }
+        .hover\:bg-gray-600:hover {
+            background-color: #4b5563;
+        }
+        .text-xs {
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+        .opacity-75 {
+            opacity: 0.75;
+        }
+        .border-l-4 {
+            border-left-width: 4px;
+        }
+        .border-blue-500 {
+            border-color: #3b82f6;
+        }
+        .items-start {
+            align-items: flex-start;
+        }
+        .gap-4 {
+            gap: 1rem;
+        }
+        .w-32 {
+            width: 8rem;
+        }
+        .h-32 {
+            height: 8rem;
+        }
+        .flex-1 {
+            flex: 1 1 0%;
+        }
+        .min-w-64 {
+            min-width: 16rem;
+        }
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+        .mb-1 {
+            margin-bottom: 0.25rem;
+        }
+        .text-gray-300 {
+            color: #d1d5db;
+        }
+        .mb-3 {
+            margin-bottom: 0.75rem;
+        }
+        .grid {
+            display: grid;
+        }
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .text-gray-400 {
+            color: #9ca3af;
+        }
+        .space-y-1 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 0.25rem;
+        }
+        .mt-3 {
+            margin-top: 0.75rem;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .text-yellow-400 {
+            color: #facc15;
+        }
+        .font-mono {
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+        }
+        .text-green-400 {
+            color: #4ade80;
+        }
+        .md\:grid-cols-4 {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+        .gap-3 {
+            gap: 0.75rem;
+        }
+        .block {
+            display: block;
+        }
+        .w-full {
             width: 100%;
-            background: #374151;
-            border-radius: 8px;
-            overflow: hidden;
         }
-        .comparison-table th,
-        .comparison-table td {
-            padding: 12px;
+        .accent-blue-500::-webkit-slider-thumb {
+            accent-color: #3b82f6;
+        }
+        .text-blue-300 {
+            color: #93c5fd;
+        }
+        .bg-gray-700 {
+            background-color: #374151;
+        }
+        .px-2 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        .py-1 {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+        .accent-gray-500::-webkit-slider-thumb {
+            accent-color: #6b7280;
+        }
+        .text-gray-300 {
+            color: #d1d5db;
+        }
+        .accent-purple-500::-webkit-slider-thumb {
+            accent-color: #8b5cf6;
+        }
+        .text-purple-300 {
+            color: #c4b5fd;
+        }
+        .accent-pink-500::-webkit-slider-thumb {
+            accent-color: #ec4899;
+        }
+        .text-pink-300 {
+            color: #f9a8d4;
+        }
+        .accent-green-500::-webkit-slider-thumb {
+            accent-color: #22c55e;
+        }
+        .text-green-300 {
+            color: #86efac;
+        }
+        .items-end {
+            align-items: flex-end;
+        }
+        .gap-2 {
+            gap: 0.5rem;
+        }
+        .cursor-pointer {
+            cursor: pointer;
+        }
+        .w-4 {
+            width: 1rem;
+        }
+        .h-4 {
+            height: 1rem;
+        }
+        .md\:grid-cols-5 {
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+        .gap-2 {
+            gap: 0.5rem;
+        }
+        .p-3 {
+            padding: 0.75rem;
+        }
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+        .text-green-400 {
+            color: #4ade80;
+        }
+        .text-green-300 {
+            color: #86efac;
+        }
+        .text-red-400 {
+            color: #f87171;
+        }
+        .text-red-300 {
+            color: #fca5a5;
+        }
+        .border {
+            border-width: 1px;
+        }
+        .border-green-600 {
+            border-color: #16a34a;
+        }
+        .text-md {
+            font-size: 1rem;
+        }
+        .text-green-400 {
+            color: #4ade80;
+        }
+        .mr-2 {
+            margin-right: 0.5rem;
+        }
+        .bg-red-600 {
+            background-color: #dc2626;
+        }
+        .bg-green-600 {
+            background-color: #16a34a;
+        }
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+        .text-purple-300 {
+            color: #c4b5fd;
+        }
+        .bg-gray-700 {
+            background-color: #374151;
+        }
+        .text-blue-300 {
+            color: #93c5fd;
+        }
+        .text-semibold {
+            font-weight: 600;
+        }
+        .max-w-2xl {
+            max-width: 42rem;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .overflow-x-auto {
+            overflow-x: auto;
+        }
+        .border-b {
+            border-bottom-width: 1px;
+        }
+        .border-gray-600 {
+            border-color: #4b5563;
+        }
+        .text-left {
             text-align: left;
-            border-bottom: 1px solid #4B5563;
         }
-        .comparison-table th {
-            background: #1F2937;
-            font-weight: bold;
-            color: #9CA3AF;
+        .border-gray-700 {
+            border-color: #374151;
         }
-        .comparison-table tr:hover {
-            background: #4B5563;
+        .hover\:bg-gray-700:hover {
+            background-color: #374151;
+        }
+        .cursor-pointer {
             cursor: pointer;
-        }
-        .rotor-diagram {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto;
-        }
-        .circuit-container {
-            background: #1F2937;
-            border: 2px solid #22C55E;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .toggle-button {
-            background: #4B5563;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            transition: background 0.3s;
-        }
-        .toggle-button.active {
-            background: #3B82F6;
-        }
-        .toggle-button:hover {
-            background: #6B7280;
-        }
-        .toggle-button.active:hover {
-            background: #2563EB;
         }
     </style>
 </head>
@@ -165,6 +335,7 @@
 
     <script type="text/babel">
         const { useState, useMemo } = React;
+        const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ReferenceArea } = Recharts;
 
         // モーター種類の定義
         const MOTOR_TYPES = {
@@ -218,239 +389,266 @@
             },
         };
 
-        // 簡易チャートコンポーネント
-        function SimpleChart({ data, selectedMotor }) {
-            const canvasRef = React.useRef(null);
+        // かご型回転子の図
+        const CageRotorDiagram = () => (
+            <svg viewBox="0 0 200 200" className="w-32 h-32">
+                <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
+                <circle cx="100" cy="100" r="60" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
+                {[...Array(12)].map((_, i) => {
+                    const angle = (i * 30 * Math.PI) / 180;
+                    const x1 = 100 + 60 * Math.cos(angle);
+                    const y1 = 100 + 60 * Math.sin(angle);
+                    const x2 = 100 + 78 * Math.cos(angle);
+                    const y2 = 100 + 78 * Math.sin(angle);
+                    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#F59E0B" strokeWidth="4" />;
+                })}
+                <circle cx="100" cy="100" r="60" fill="none" stroke="#F59E0B" strokeWidth="3" />
+                <circle cx="100" cy="100" r="78" fill="none" stroke="#F59E0B" strokeWidth="3" />
+                <circle cx="100" cy="100" r="15" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
+                <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">かご型回転子</text>
+            </svg>
+        );
 
-            React.useEffect(() => {
-                if (!data.length) return;
-                
-                const canvas = canvasRef.current;
-                const ctx = canvas.getContext('2d');
-                const width = canvas.width;
-                const height = canvas.height;
-                
-                // キャンバスをクリア
-                ctx.clearRect(0, 0, width, height);
-                
-                // データの範囲を計算
-                const maxTime = Math.max(...data.map(d => d.time));
-                const maxCurrent = Math.max(...data.map(d => Math.max(Math.abs(d.iU), Math.abs(d.iV), Math.abs(d.iW))));
-                const minCurrent = -maxCurrent;
-                
-                // スケール関数
-                const scaleX = (t) => (t / maxTime) * (width - 80) + 40;
-                const scaleY = (i) => height/2 - (i / maxCurrent) * (height/2 - 20);
-                
-                // グリッドを描画
-                ctx.strokeStyle = '#4B5563';
-                ctx.lineWidth = 1;
-                ctx.setLineDash([2, 2]);
-                
-                // 水平グリッド
-                for (let i = -maxCurrent; i <= maxCurrent; i += maxCurrent/4) {
-                    const y = scaleY(i);
-                    ctx.beginPath();
-                    ctx.moveTo(40, y);
-                    ctx.lineTo(width - 40, y);
-                    ctx.stroke();
-                }
-                
-                // 垂直グリッド
-                for (let t = 0; t <= maxTime; t += maxTime/8) {
-                    const x = scaleX(t);
-                    ctx.beginPath();
-                    ctx.moveTo(x, 20);
-                    ctx.lineTo(x, height - 20);
-                    ctx.stroke();
-                }
-                ctx.setLineDash([]);
-                
-                // ゼロライン
-                ctx.strokeStyle = '#6B7280';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(40, height/2);
-                ctx.lineTo(width - 40, height/2);
-                ctx.stroke();
-                
-                // 三相電流を描画
-                const phases = [
-                    { key: 'iU', color: '#EF4444', name: 'U相' },
-                    { key: 'iV', color: '#22C55E', name: 'V相' },
-                    { key: 'iW', color: '#3B82F6', name: 'W相' }
-                ];
-                
-                phases.forEach(phase => {
-                    ctx.strokeStyle = phase.color;
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    
-                    data.forEach((point, index) => {
-                        const x = scaleX(point.time);
-                        const y = scaleY(point[phase.key]);
-                        
-                        if (index === 0) {
-                            ctx.moveTo(x, y);
-                        } else {
-                            ctx.lineTo(x, y);
-                        }
-                    });
-                    
-                    ctx.stroke();
-                });
-                
-                // 凡例を描画
-                ctx.font = '12px Arial';
-                phases.forEach((phase, index) => {
-                    ctx.fillStyle = phase.color;
-                    ctx.fillRect(width - 160 + index * 50, 30, 15, 15);
-                    ctx.fillStyle = '#D1D5DB';
-                    ctx.fillText(phase.name, width - 140 + index * 50, 42);
-                });
-                
-                // 軸ラベル
-                ctx.fillStyle = '#9CA3AF';
-                ctx.font = '11px Arial';
-                ctx.fillText('時間 [ms]', width/2 - 20, height - 5);
-                
-                // Y軸ラベル（回転）
-                ctx.save();
-                ctx.translate(15, height/2);
-                ctx.rotate(-Math.PI/2);
-                ctx.fillText('電流 [A]', 0, 0);
-                ctx.restore();
-                
-                // Y軸目盛り
-                for (let i = -maxCurrent; i <= maxCurrent; i += maxCurrent/2) {
-                    if (i === 0) continue;
-                    const y = scaleY(i);
-                    ctx.fillStyle = '#9CA3AF';
-                    ctx.fillText(i.toFixed(0), 5, y + 4);
-                }
-                
-                // X軸目盛り
-                for (let t = 0; t <= maxTime; t += maxTime/4) {
-                    const x = scaleX(t);
-                    ctx.fillStyle = '#9CA3AF';
-                    ctx.fillText(t.toFixed(0), x - 10, height - 25);
-                }
-                
-            }, [data]);
+        // 巻線型回転子の図
+        const WoundRotorDiagram = () => (
+            <svg viewBox="0 0 200 200" className="w-32 h-32">
+                <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
+                <circle cx="100" cy="100" r="60" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
+                {[0, 120, 240].map((deg, i) => {
+                    const colors = ['#EF4444', '#22C55E', '#3B82F6'];
+                    const angle = (deg * Math.PI) / 180;
+                    return (
+                        <g key={i}>
+                            <path
+                                d={`M${100 + 30 * Math.cos(angle)},${100 + 30 * Math.sin(angle)} 
+                                    Q${100 + 50 * Math.cos(angle + 0.3)},${100 + 50 * Math.sin(angle + 0.3)} 
+                                    ${100 + 70 * Math.cos(angle)},${100 + 70 * Math.sin(angle)}`}
+                                fill="none" stroke={colors[i]} strokeWidth="3"
+                            />
+                            <path
+                                d={`M${100 + 30 * Math.cos(angle + Math.PI)},${100 + 30 * Math.sin(angle + Math.PI)} 
+                                    Q${100 + 50 * Math.cos(angle + Math.PI - 0.3)},${100 + 50 * Math.sin(angle + Math.PI - 0.3)} 
+                                    ${100 + 70 * Math.cos(angle + Math.PI)},${100 + 70 * Math.sin(angle + Math.PI)}`}
+                                fill="none" stroke={colors[i]} strokeWidth="3"
+                            />
+                        </g>
+                    );
+                })}
+                <circle cx="100" cy="100" r="20" fill="none" stroke="#F59E0B" strokeWidth="4" />
+                <circle cx="100" cy="100" r="12" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
+                <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">巻線型回転子</text>
+            </svg>
+        );
 
-            return (
-                <canvas 
-                    ref={canvasRef} 
-                    width={800} 
-                    height={400}
-                    style={{width: '100%', height: 'auto', maxWidth: '800px'}}
-                />
-            );
-        }
+        // 突極型回転子の図
+        const SalientPoleDiagram = () => (
+            <svg viewBox="0 0 200 200" className="w-32 h-32">
+                <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
+                {[0, 90, 180, 270].map((deg, i) => {
+                    const angle = (deg * Math.PI) / 180;
+                    const x = 100 + 45 * Math.cos(angle);
+                    const y = 100 + 45 * Math.sin(angle);
+                    return (
+                        <g key={i}>
+                            <rect
+                                x={x - 15} y={y - 25}
+                                width="30" height="50"
+                                fill="#1F2937" stroke="#EC4899" strokeWidth="2"
+                                transform={`rotate(${deg}, ${x}, ${y})`}
+                            />
+                            <rect
+                                x={x - 10} y={y - 20}
+                                width="20" height="40"
+                                fill="none" stroke="#F59E0B" strokeWidth="2"
+                                transform={`rotate(${deg}, ${x}, ${y})`}
+                            />
+                        </g>
+                    );
+                })}
+                <circle cx="100" cy="100" r="25" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
+                <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">突極型回転子</text>
+            </svg>
+        );
 
-        // 回転子図コンポーネント
-        function RotorDiagram({ type }) {
+        // 円筒型回転子の図
+        const CylindricalRotorDiagram = () => (
+            <svg viewBox="0 0 200 200" className="w-32 h-32">
+                <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
+                <circle cx="100" cy="100" r="65" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
+                {[...Array(24)].map((_, i) => {
+                    const angle = (i * 15 * Math.PI) / 180;
+                    const x1 = 100 + 40 * Math.cos(angle);
+                    const y1 = 100 + 40 * Math.sin(angle);
+                    const x2 = 100 + 63 * Math.cos(angle);
+                    const y2 = 100 + 63 * Math.sin(angle);
+                    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#F59E0B" strokeWidth="2" />;
+                })}
+                <circle cx="100" cy="100" r="40" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
+                <circle cx="100" cy="100" r="15" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
+                <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">円筒型回転子</text>
+            </svg>
+        );
+
+        // 回転子図のコンポーネント選択
+        const RotorDiagram = ({ type }) => {
             switch (type) {
-                case 'cage':
-                    return (
-                        <svg viewBox="0 0 200 200" className="rotor-diagram">
-                            <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
-                            <circle cx="100" cy="100" r="60" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
-                            {Array.from({length: 12}).map((_, i) => {
-                                const angle = (i * 30 * Math.PI) / 180;
-                                const x1 = 100 + 60 * Math.cos(angle);
-                                const y1 = 100 + 60 * Math.sin(angle);
-                                const x2 = 100 + 78 * Math.cos(angle);
-                                const y2 = 100 + 78 * Math.sin(angle);
-                                return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#F59E0B" strokeWidth="4" />;
-                            })}
-                            <circle cx="100" cy="100" r="60" fill="none" stroke="#F59E0B" strokeWidth="3" />
-                            <circle cx="100" cy="100" r="78" fill="none" stroke="#F59E0B" strokeWidth="3" />
-                            <circle cx="100" cy="100" r="15" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
-                            <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">かご型回転子</text>
-                        </svg>
-                    );
-                case 'wound':
-                    return (
-                        <svg viewBox="0 0 200 200" className="rotor-diagram">
-                            <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
-                            <circle cx="100" cy="100" r="60" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
-                            {[0, 120, 240].map((deg, i) => {
-                                const colors = ['#EF4444', '#22C55E', '#3B82F6'];
-                                const angle = (deg * Math.PI) / 180;
-                                return (
-                                    <g key={i}>
-                                        <path
-                                            d={`M${100 + 30 * Math.cos(angle)},${100 + 30 * Math.sin(angle)} 
-                                                Q${100 + 50 * Math.cos(angle + 0.3)},${100 + 50 * Math.sin(angle + 0.3)} 
-                                                ${100 + 70 * Math.cos(angle)},${100 + 70 * Math.sin(angle)}`}
-                                            fill="none" stroke={colors[i]} strokeWidth="3"
-                                        />
-                                        <path
-                                            d={`M${100 + 30 * Math.cos(angle + Math.PI)},${100 + 30 * Math.sin(angle + Math.PI)} 
-                                                Q${100 + 50 * Math.cos(angle + Math.PI - 0.3)},${100 + 50 * Math.sin(angle + Math.PI - 0.3)} 
-                                                ${100 + 70 * Math.cos(angle + Math.PI)},${100 + 70 * Math.sin(angle + Math.PI)}`}
-                                            fill="none" stroke={colors[i]} strokeWidth="3"
-                                        />
-                                    </g>
-                                );
-                            })}
-                            <circle cx="100" cy="100" r="20" fill="none" stroke="#F59E0B" strokeWidth="4" />
-                            <circle cx="100" cy="100" r="12" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
-                            <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">巻線型回転子</text>
-                        </svg>
-                    );
-                case 'salient':
-                    return (
-                        <svg viewBox="0 0 200 200" className="rotor-diagram">
-                            <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
-                            {[0, 90, 180, 270].map((deg, i) => {
-                                const angle = (deg * Math.PI) / 180;
-                                const x = 100 + 45 * Math.cos(angle);
-                                const y = 100 + 45 * Math.sin(angle);
-                                return (
-                                    <g key={i}>
-                                        <rect
-                                            x={x - 15} y={y - 25}
-                                            width="30" height="50"
-                                            fill="#1F2937" stroke="#EC4899" strokeWidth="2"
-                                            transform={`rotate(${deg}, ${x}, ${y})`}
-                                        />
-                                        <rect
-                                            x={x - 10} y={y - 20}
-                                            width="20" height="40"
-                                            fill="none" stroke="#F59E0B" strokeWidth="2"
-                                            transform={`rotate(${deg}, ${x}, ${y})`}
-                                        />
-                                    </g>
-                                );
-                            })}
-                            <circle cx="100" cy="100" r="25" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
-                            <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">突極型回転子</text>
-                        </svg>
-                    );
-                case 'cylindrical':
-                    return (
-                        <svg viewBox="0 0 200 200" className="rotor-diagram">
-                            <circle cx="100" cy="100" r="80" fill="#374151" stroke="#6B7280" strokeWidth="2" />
-                            <circle cx="100" cy="100" r="65" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
-                            {Array.from({length: 24}).map((_, i) => {
-                                const angle = (i * 15 * Math.PI) / 180;
-                                const x1 = 100 + 40 * Math.cos(angle);
-                                const y1 = 100 + 40 * Math.sin(angle);
-                                const x2 = 100 + 63 * Math.cos(angle);
-                                const y2 = 100 + 63 * Math.sin(angle);
-                                return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#F59E0B" strokeWidth="2" />;
-                            })}
-                            <circle cx="100" cy="100" r="40" fill="#1F2937" stroke="#6B7280" strokeWidth="1" />
-                            <circle cx="100" cy="100" r="15" fill="#4B5563" stroke="#6B7280" strokeWidth="2" />
-                            <text x="100" y="185" textAnchor="middle" fill="#9CA3AF" fontSize="10">円筒型回転子</text>
-                        </svg>
-                    );
-                default:
-                    return null;
+                case 'cage': return <CageRotorDiagram />;
+                case 'wound': return <WoundRotorDiagram />;
+                case 'salient': return <SalientPoleDiagram />;
+                case 'cylindrical': return <CylindricalRotorDiagram />;
+                default: return <CageRotorDiagram />;
             }
-        }
+        };
+
+        // 誘導機等価回路
+        const InductionMotorCircuit = ({ slip = 1, hasExternalResistor = false }) => {
+            const r2s = slip === 0 ? '∞' : (1/slip).toFixed(1);
+            return (
+                <svg viewBox="0 0 600 220" className="w-full max-w-2xl mx-auto">
+                    <rect x="0" y="0" width="600" height="220" fill="#1F2937" rx="8" />
+                    
+                    {/* 電源 */}
+                    <circle cx="40" cy="110" r="18" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                    <text x="40" y="115" textAnchor="middle" fill="#3B82F6" fontSize="12" fontWeight="bold">V</text>
+                    <line x1="40" y1="92" x2="40" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                    <line x1="40" y1="128" x2="40" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                    
+                    <line x1="40" y1="50" x2="80" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                    
+                    {/* R1 */}
+                    <rect x="80" y="40" width="40" height="20" fill="none" stroke="#EF4444" strokeWidth="2" />
+                    <text x="100" y="35" textAnchor="middle" fill="#EF4444" fontSize="10">R₁</text>
+                    
+                    <line x1="120" y1="50" x2="150" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                    
+                    {/* X1 */}
+                    <path d="M150,50 Q160,40 170,50 Q180,60 190,50 Q200,40 210,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                    <text x="180" y="35" textAnchor="middle" fill="#F59E0B" fontSize="10">jX₁</text>
+                    
+                    <line x1="210" y1="50" x2="250" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                    <circle cx="250" cy="50" r="3" fill="#9CA3AF" />
+                    
+                    {/* 励磁回路 */}
+                    <line x1="250" y1="50" x2="250" y2="80" stroke="#9CA3AF" strokeWidth="2" />
+                    <path d="M250,80 Q240,90 250,100 Q260,110 250,120 Q240,130 250,140" fill="none" stroke="#22C55E" strokeWidth="2" />
+                    <text x="230" y="115" textAnchor="end" fill="#22C55E" fontSize="9">jXₘ</text>
+                    <line x1="250" y1="140" x2="250" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                    
+                    <line x1="250" y1="50" x2="300" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                    
+                    {/* X2' */}
+                    <path d="M300,50 Q310,40 320,50 Q330,60 340,50 Q350,40 360,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                    <text x="330" y="35" textAnchor="middle" fill="#F59E0B" fontSize="10">jX₂'</text>
+                    
+                    <line x1="360" y1="50" x2="400" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                    
+                    {/* R2'/s */}
+                    <rect x="400" y="40" width="50" height="20" fill="none" stroke="#EC4899" strokeWidth="2" />
+                    <text x="425" y="35" textAnchor="middle" fill="#EC4899" fontSize="10">R₂'/s</text>
+                    
+                    <line x1="450" y1="50" x2="480" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                    
+                    {/* 外部抵抗（巻線型の場合） */}
+                    {hasExternalResistor && (
+                        <>
+                            <rect x="480" y="40" width="40" height="20" fill="none" stroke="#A855F7" strokeWidth="2" strokeDasharray="4,2" />
+                            <text x="500" y="35" textAnchor="middle" fill="#A855F7" fontSize="10">R_ext</text>
+                            <line x1="520" y1="50" x2="560" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                            <line x1="560" y1="50" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                        </>
+                    )}
+                    {!hasExternalResistor && (
+                        <>
+                            <line x1="480" y1="50" x2="560" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                            <line x1="560" y1="50" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                        </>
+                    )}
+                    
+                    <line x1="40" y1="170" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                    
+                    {/* スリップ表示 */}
+                    <rect x="400" y="70" width="80" height="30" fill="#374151" rx="4" />
+                    <text x="440" y="85" textAnchor="middle" fill="#9CA3AF" fontSize="9">s = {slip}</text>
+                    <text x="440" y="96" textAnchor="middle" fill="#EC4899" fontSize="8">
+                        {slip === 1 ? '(停止)' : '(定格)'}
+                    </text>
+                    
+                    {/* 凡例 */}
+                    <text x="20" y="200" fill="#9CA3AF" fontSize="9">
+                        <tspan fill="#EF4444">R₁</tspan>:一次抵抗 <tspan fill="#F59E0B">X₁,X₂'</tspan>:漏れリアクタンス <tspan fill="#22C55E">Xₘ</tspan>:励磁 <tspan fill="#EC4899">R₂'/s</tspan>:二次抵抗
+                        {hasExternalResistor && <tspan fill="#A855F7"> R_ext</tspan>}
+                        {hasExternalResistor && ':外部抵抗'}
+                    </text>
+                </svg>
+            );
+        };
+
+        // 同期機等価回路
+        const SynchronousMotorCircuit = ({ isSalient = true }) => (
+            <svg viewBox="0 0 600 220" className="w-full max-w-2xl mx-auto">
+                <rect x="0" y="0" width="600" height="220" fill="#1F2937" rx="8" />
+                
+                {/* 電源 */}
+                <circle cx="40" cy="110" r="18" fill="none" stroke="#3B82F6" strokeWidth="2" />
+                <text x="40" y="115" textAnchor="middle" fill="#3B82F6" fontSize="12" fontWeight="bold">V</text>
+                <line x1="40" y1="92" x2="40" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                <line x1="40" y1="128" x2="40" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                
+                <line x1="40" y1="50" x2="80" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                
+                {/* Ra - 電機子抵抗 */}
+                <rect x="80" y="40" width="40" height="20" fill="none" stroke="#EF4444" strokeWidth="2" />
+                <text x="100" y="35" textAnchor="middle" fill="#EF4444" fontSize="10">Rₐ</text>
+                
+                <line x1="120" y1="50" x2="160" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                
+                {/* Xs - 同期リアクタンス */}
+                {isSalient ? (
+                    <>
+                        <path d="M160,50 Q175,35 190,50 Q205,65 220,50 Q235,35 250,50 Q265,65 280,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                        <text x="220" y="30" textAnchor="middle" fill="#F59E0B" fontSize="10">jXd (直軸)</text>
+                        <text x="220" y="75" textAnchor="middle" fill="#F59E0B" fontSize="9" opacity="0.7">jXq (横軸)</text>
+                    </>
+                ) : (
+                    <>
+                        <path d="M160,50 Q175,35 190,50 Q205,65 220,50 Q235,35 250,50 Q265,65 280,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                        <text x="220" y="30" textAnchor="middle" fill="#F59E0B" fontSize="10">jXs</text>
+                    </>
+                )}
+                
+                <line x1="280" y1="50" x2="350" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                
+                {/* 誘起電圧 E */}
+                <circle cx="380" cy="50" r="25" fill="none" stroke="#22C55E" strokeWidth="2" />
+                <text x="380" y="55" textAnchor="middle" fill="#22C55E" fontSize="14" fontWeight="bold">E</text>
+                <text x="380" y="90" textAnchor="middle" fill="#22C55E" fontSize="9">誘起電圧</text>
+                
+                <line x1="405" y1="50" x2="450" y2="50" stroke="#9CA3AF" strokeWidth="2" />
+                
+                {/* 界磁回路（DC励磁） */}
+                <rect x="450" y="30" width="100" height="60" fill="#374151" stroke="#A855F7" strokeWidth="2" rx="4" />
+                <text x="500" y="55" textAnchor="middle" fill="#A855F7" fontSize="10">界磁回路</text>
+                <text x="500" y="70" textAnchor="middle" fill="#A855F7" fontSize="9">(DC励磁)</text>
+                
+                <line x1="550" y1="60" x2="560" y2="60" stroke="#9CA3AF" strokeWidth="2" />
+                <line x1="560" y1="60" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                <line x1="40" y1="170" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
+                
+                {/* 凡例 */}
+                <text x="20" y="200" fill="#9CA3AF" fontSize="9">
+                    <tspan fill="#EF4444">Rₐ</tspan>:電機子抵抗 
+                    <tspan fill="#F59E0B">{isSalient ? 'Xd,Xq' : 'Xs'}</tspan>:{isSalient ? '直軸・横軸リアクタンス' : '同期リアクタンス'} 
+                    <tspan fill="#22C55E">E</tspan>:誘起電圧 
+                    <tspan fill="#A855F7">界磁</tspan>:DC励磁
+                </text>
+                
+                {isSalient && (
+                    <text x="20" y="215" fill="#9CA3AF" fontSize="8">
+                        ※突極型はXd ≠ Xq（磁気的非対称性）
+                    </text>
+                )}
+            </svg>
+        );
 
         // メインコンポーネント
         function MotorStartupSimulator() {
@@ -462,6 +660,7 @@
             const [dcTimeConstant, setDcTimeConstant] = useState(50);
             const [viewCycles, setViewCycles] = useState(10);
             const [stopTime, setStopTime] = useState(50);
+            const [showEnvelope, setShowEnvelope] = useState(true);
             const [showCircuit, setShowCircuit] = useState(false);
             const [circuitSlip, setCircuitSlip] = useState(1);
 
@@ -496,6 +695,7 @@
                         data.push({
                             time: parseFloat(tMs.toFixed(2)),
                             iU: 0, iV: 0, iW: 0,
+                            envPos: 0, envNeg: 0, dcU: 0,
                             peakRated: parseFloat(peakRated.toFixed(1)),
                         });
                         continue;
@@ -517,6 +717,9 @@
                     const iV = currentAmplitude * Math.sin(phaseV) + dcV;
                     const iW = currentAmplitude * Math.sin(phaseW) + dcW;
                     
+                    const envelopeU_pos = currentAmplitude + Math.abs(dcU);
+                    const envelopeU_neg = -(currentAmplitude + Math.abs(dcU));
+                    
                     maxCurrent = Math.max(maxCurrent, Math.abs(iU), Math.abs(iV), Math.abs(iW));
                     
                     data.push({
@@ -524,6 +727,9 @@
                         iU: parseFloat(iU.toFixed(1)),
                         iV: parseFloat(iV.toFixed(1)),
                         iW: parseFloat(iW.toFixed(1)),
+                        envPos: parseFloat(envelopeU_pos.toFixed(1)),
+                        envNeg: parseFloat(envelopeU_neg.toFixed(1)),
+                        dcU: parseFloat(dcU.toFixed(1)),
                         peakRated: parseFloat(peakRated.toFixed(1)),
                     });
                 }
@@ -538,377 +744,275 @@
             };
 
             return (
-                <div className="container">
-                    <header style={{textAlign: 'center', marginBottom: '30px'}}>
-                        <h1 style={{fontSize: '2.5rem', margin: '0 0 10px 0', color: '#3B82F6'}}>
-                            ⚡ モーター突入電流シミュレーター
-                        </h1>
-                        <p style={{fontSize: '1.1rem', color: '#9CA3AF', margin: 0}}>
-                            始動時の三相電流波形とDC成分を可視化
-                        </p>
-                    </header>
-
-                    {/* モーター種類選択 */}
-                    <div className="motor-tabs">
-                        {Object.values(MOTOR_TYPES).map((m) => (
-                            <div
-                                key={m.id}
-                                onClick={() => setSelectedMotor(m.id)}
-                                className={`motor-tab ${selectedMotor === m.id ? 'active' : ''}`}
-                            >
-                                <div style={{fontWeight: 'bold'}}>{m.name}</div>
-                                <div style={{fontSize: '0.75rem', opacity: 0.8}}>{m.category}</div>
-                            </div>
-                        ))}
+                <div className="min-h-screen bg-gray-900 text-gray-100 p-4">
+                    <h1 className="text-2xl font-bold text-center mb-2 text-blue-400">
+                        モーター始動時 突入電流シミュレーション
+                    </h1>
+                    
+                    {/* モーター種類タブ */}
+                    <div className="mb-4">
+                        <div className="flex flex-wrap gap-1 bg-gray-800 p-2 rounded-lg">
+                            {Object.values(MOTOR_TYPES).map((m) => (
+                                <button
+                                    key={m.id}
+                                    onClick={() => setSelectedMotor(m.id)}
+                                    className={`px-3 py-2 rounded text-sm transition-all ${
+                                        selectedMotor === m.id
+                                            ? 'bg-blue-600 text-white'
+                                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                    }`}
+                                >
+                                    <div className="font-semibold">{m.name}</div>
+                                    <div className="text-xs opacity-75">{m.category}</div>
+                                </button>
+                            ))}
+                        </div>
                     </div>
-
-                    {/* 選択されたモーターの詳細 */}
-                    <div className="motor-card">
-                        <div style={{display: 'flex', alignItems: 'flex-start', gap: '20px', flexWrap: 'wrap'}}>
+                    
+                    {/* 選択したモーターの情報 */}
+                    <div className="bg-gray-800 p-4 rounded-lg mb-4 border-l-4 border-blue-500">
+                        <div className="flex flex-wrap items-start gap-4">
                             <RotorDiagram type={motor.rotorType} />
-                            <div style={{flex: 1, minWidth: '300px'}}>
-                                <h2 style={{fontSize: '1.5rem', color: '#3B82F6', margin: '0 0 10px 0'}}>{motor.name}</h2>
-                                <p style={{color: '#D1D5DB', marginBottom: '15px'}}>{motor.description}</p>
-                                <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', fontSize: '0.9rem'}}>
+                            <div className="flex-1 min-w-64">
+                                <h2 className="text-xl font-bold text-blue-400 mb-1">{motor.name}</h2>
+                                <p className="text-sm text-gray-300 mb-3">{motor.description}</p>
+                                <div className="grid grid-cols-2 gap-4 text-sm">
                                     <div>
-                                        <div style={{color: '#9CA3AF', fontSize: '0.8rem', marginBottom: '5px'}}>特徴</div>
-                                        <ul style={{margin: 0, paddingLeft: '15px'}}>
+                                        <div className="text-gray-400 text-xs mb-1">特徴</div>
+                                        <ul className="space-y-1">
                                             {motor.features.map((f, i) => (
-                                                <li key={i} style={{color: '#D1D5DB', fontSize: '0.8rem', marginBottom: '3px'}}>{f}</li>
+                                                <li key={i} className="text-xs text-gray-300">• {f}</li>
                                             ))}
                                         </ul>
                                     </div>
                                     <div>
-                                        <div style={{color: '#9CA3AF', fontSize: '0.8rem', marginBottom: '5px'}}>主な用途</div>
-                                        <p style={{color: '#D1D5DB', fontSize: '0.8rem', margin: '0 0 15px 0'}}>{motor.applications}</p>
-                                        <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '5px'}}>
-                                            <span style={{color: '#9CA3AF'}}>突入電流倍率:</span>
-                                            <span style={{color: '#F59E0B', fontWeight: 'bold'}}>{motor.inrushMultiplier}倍</span>
-                                        </div>
-                                        <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem'}}>
-                                            <span style={{color: '#9CA3AF'}}>始動トルク:</span>
-                                            <span style={{color: '#22C55E', fontWeight: 'bold'}}>{motor.startTorque} p.u.</span>
+                                        <div className="text-gray-400 text-xs mb-1">用途</div>
+                                        <p className="text-xs text-gray-300">{motor.applications}</p>
+                                        <div className="mt-3 space-y-1">
+                                            <div className="flex justify-between text-xs">
+                                                <span className="text-gray-400">突入電流倍率:</span>
+                                                <span className="text-yellow-400 font-mono">{motor.inrushMultiplier}倍</span>
+                                            </div>
+                                            <div className="flex justify-between text-xs">
+                                                <span className="text-gray-400">始動トルク:</span>
+                                                <span className="text-green-400 font-mono">{motor.startTorque} p.u.</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    
                     {/* パラメータ設定 */}
-                    <div className="parameter-grid">
-                        <div className="parameter-item">
-                            <label>定格出力 [kW]</label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 bg-gray-800 p-4 rounded-lg">
+                        <div>
+                            <label className="block text-xs text-gray-400 mb-1">定格出力 [kW]</label>
                             <input type="range" min="0.75" max="37" step="0.25" value={ratedPower}
-                                onChange={(e) => setRatedPower(parseFloat(e.target.value))} />
-                            <div style={{color: '#3B82F6', fontWeight: 'bold', marginTop: '5px'}}>{ratedPower} kW</div>
+                                onChange={(e) => setRatedPower(parseFloat(e.target.value))} className="w-full accent-blue-500" />
+                            <span className="text-sm font-mono text-blue-300">{ratedPower} kW</span>
                         </div>
-                        <div className="parameter-item">
-                            <label>定格電圧 [V]</label>
-                            <select value={ratedVoltage} onChange={(e) => setRatedVoltage(parseInt(e.target.value))}>
+                        <div>
+                            <label className="block text-xs text-gray-400 mb-1">定格電圧 [V]</label>
+                            <select value={ratedVoltage} onChange={(e) => setRatedVoltage(parseInt(e.target.value))}
+                                className="w-full bg-gray-700 rounded px-2 py-1 text-sm">
                                 <option value={200}>200V</option>
                                 <option value={400}>400V</option>
                                 <option value={6600}>6.6kV</option>
                             </select>
                         </div>
-                        <div className="parameter-item">
-                            <label>電源周波数 [Hz]</label>
-                            <select value={frequency} onChange={(e) => setFrequency(parseInt(e.target.value))}>
+                        <div>
+                            <label className="block text-xs text-gray-400 mb-1">電源周波数 [Hz]</label>
+                            <select value={frequency} onChange={(e) => setFrequency(parseInt(e.target.value))}
+                                className="w-full bg-gray-700 rounded px-2 py-1 text-sm">
                                 <option value={50}>50Hz</option>
                                 <option value={60}>60Hz</option>
                             </select>
                         </div>
-                        <div className="parameter-item">
-                            <label>停止時間 [ms]</label>
+                        <div>
+                            <label className="block text-xs text-gray-400 mb-1">停止時間 [ms]</label>
                             <input type="range" min="0" max="100" step="10" value={stopTime}
-                                onChange={(e) => setStopTime(parseInt(e.target.value))} />
-                            <div style={{color: '#9CA3AF', fontWeight: 'bold', marginTop: '5px'}}>{stopTime} ms</div>
+                                onChange={(e) => setStopTime(parseInt(e.target.value))} className="w-full accent-gray-500" />
+                            <span className="text-sm font-mono text-gray-300">{stopTime} ms</span>
                         </div>
-                        <div className="parameter-item">
-                            <label>投入位相角 [°]</label>
+                        <div>
+                            <label className="block text-xs text-gray-400 mb-1">投入位相角 [°]</label>
                             <input type="range" min="0" max="360" step="15" value={switchingAngle}
-                                onChange={(e) => setSwitchingAngle(parseInt(e.target.value))} />
-                            <div style={{color: '#A855F7', fontWeight: 'bold', marginTop: '5px'}}>{switchingAngle}° 
-                                <span style={{fontSize: '0.8rem', color: '#3B82F6'}}> {getPhaseDescription(switchingAngle)}</span>
-                            </div>
+                                onChange={(e) => setSwitchingAngle(parseInt(e.target.value))} className="w-full accent-purple-500" />
+                            <span className="text-sm font-mono text-purple-300">{switchingAngle}° <span className="text-xs text-blue-400">{getPhaseDescription(switchingAngle)}</span></span>
                         </div>
-                        <div className="parameter-item">
-                            <label>DC減衰時定数 [ms]</label>
+                        <div>
+                            <label className="block text-xs text-gray-400 mb-1">DC減衰時定数 [ms]</label>
                             <input type="range" min="10" max="200" step="5" value={dcTimeConstant}
-                                onChange={(e) => setDcTimeConstant(parseInt(e.target.value))} />
-                            <div style={{color: '#EC4899', fontWeight: 'bold', marginTop: '5px'}}>{dcTimeConstant} ms</div>
+                                onChange={(e) => setDcTimeConstant(parseInt(e.target.value))} className="w-full accent-pink-500" />
+                            <span className="text-sm font-mono text-pink-300">{dcTimeConstant} ms</span>
                         </div>
-                        <div className="parameter-item">
-                            <label>表示サイクル数</label>
+                        <div>
+                            <label className="block text-xs text-gray-400 mb-1">表示サイクル数</label>
                             <input type="range" min="3" max="30" step="1" value={viewCycles}
-                                onChange={(e) => setViewCycles(parseInt(e.target.value))} />
-                            <div style={{color: '#22C55E', fontWeight: 'bold', marginTop: '5px'}}>{viewCycles} サイクル</div>
+                                onChange={(e) => setViewCycles(parseInt(e.target.value))} className="w-full accent-green-500" />
+                            <span className="text-sm font-mono text-green-300">{viewCycles} サイクル</span>
                         </div>
-                        <div className="parameter-item">
-                            <label>オプション</label>
-                            <button 
-                                className={`toggle-button ${showCircuit ? 'active' : ''}`}
-                                onClick={() => setShowCircuit(!showCircuit)}
-                            >
-                                等価回路表示
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* 計算結果 */}
-                    <div className="stats-grid">
-                        <div className="stat-card">
-                            <div style={{fontSize: '0.8rem', color: '#9CA3AF'}}>定格電流</div>
-                            <div className="stat-value" style={{color: '#22C55E'}}>{simulationData.ratedCurrent.toFixed(1)} A</div>
-                        </div>
-                        <div className="stat-card">
-                            <div style={{fontSize: '0.8rem', color: '#9CA3AF'}}>定格ピーク</div>
-                            <div className="stat-value" style={{color: '#10B981'}}>{simulationData.peakRated.toFixed(1)} A</div>
-                        </div>
-                        <div className="stat-card">
-                            <div style={{fontSize: '0.8rem', color: '#9CA3AF'}}>突入ピーク</div>
-                            <div className="stat-value" style={{color: '#F59E0B'}}>{simulationData.peakInrush.toFixed(1)} A</div>
-                        </div>
-                        <div className="stat-card">
-                            <div style={{fontSize: '0.8rem', color: '#9CA3AF'}}>最大瞬時電流</div>
-                            <div className="stat-value" style={{color: '#EF4444'}}>{simulationData.maxCurrent.toFixed(1)} A</div>
-                        </div>
-                        <div className="stat-card">
-                            <div style={{fontSize: '0.8rem', color: '#9CA3AF'}}>対定格比</div>
-                            <div className="stat-value" style={{color: '#DC2626'}}>{(simulationData.maxCurrent / simulationData.peakRated).toFixed(1)} 倍</div>
+                        <div className="flex items-end gap-2">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked={showEnvelope} onChange={(e) => setShowEnvelope(e.target.checked)}
+                                    className="w-4 h-4 accent-blue-500" />
+                                <span className="text-xs">包絡線</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked={showCircuit} onChange={(e) => setShowCircuit(e.target.checked)}
+                                    className="w-4 h-4 accent-green-500" />
+                                <span className="text-xs">等価回路</span>
+                            </label>
                         </div>
                     </div>
-
-                    {/* 三相電流波形グラフ */}
-                    <div className="chart-container">
-                        <h3 style={{margin: '0 0 20px 0', fontSize: '1.2rem', color: '#D1D5DB'}}>三相電流波形 - {motor.name}</h3>
-                        <SimpleChart data={simulationData.data} selectedMotor={selectedMotor} />
+                    
+                    {/* 計算結果サマリー */}
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-4">
+                        <div className="bg-gray-800 p-3 rounded text-center">
+                            <div className="text-xs text-gray-400">定格電流</div>
+                            <div className="text-lg font-bold text-green-400">{simulationData.ratedCurrent.toFixed(1)} A</div>
+                        </div>
+                        <div className="bg-gray-800 p-3 rounded text-center">
+                            <div className="text-xs text-gray-400">定格ピーク</div>
+                            <div className="text-lg font-bold text-green-300">{simulationData.peakRated.toFixed(1)} A</div>
+                        </div>
+                        <div className="bg-gray-800 p-3 rounded text-center">
+                            <div className="text-xs text-gray-400">突入ピーク</div>
+                            <div className="text-lg font-bold text-yellow-400">{simulationData.peakInrush.toFixed(1)} A</div>
+                        </div>
+                        <div className="bg-gray-800 p-3 rounded text-center">
+                            <div className="text-xs text-gray-400">最大瞬時電流</div>
+                            <div className="text-lg font-bold text-red-400">{simulationData.maxCurrent.toFixed(1)} A</div>
+                        </div>
+                        <div className="bg-gray-800 p-3 rounded text-center">
+                            <div className="text-xs text-gray-400">対定格比</div>
+                            <div className="text-lg font-bold text-red-300">{(simulationData.maxCurrent / simulationData.peakRated).toFixed(1)} 倍</div>
+                        </div>
                     </div>
-
+                    
                     {/* 等価回路表示 */}
                     {showCircuit && (
-                        <div className="circuit-container">
-                            <h3 style={{margin: '0 0 15px 0', fontSize: '1.2rem', color: '#22C55E'}}>
-                                {motor.name} - 等価回路
+                        <div className="bg-gray-800 p-4 rounded-lg mb-4 border border-green-600">
+                            <h3 className="text-md font-bold text-green-400 mb-3">
+                                {motor.name} 等価回路
                             </h3>
                             
                             {motor.category === '誘導機' && (
-                                <div>
-                                    <div style={{marginBottom: '15px', textAlign: 'center'}}>
-                                        <button 
-                                            onClick={() => setCircuitSlip(1)}
-                                            className={`toggle-button ${circuitSlip === 1 ? 'active' : ''}`}
-                                            style={{marginRight: '10px'}}
-                                        >
+                                <>
+                                    <div className="mb-3">
+                                        <button onClick={() => setCircuitSlip(1)}
+                                            className={`px-3 py-1 rounded mr-2 text-xs ${circuitSlip === 1 ? 'bg-red-600' : 'bg-gray-600'}`}>
                                             s = 1 (停止)
                                         </button>
-                                        <button 
-                                            onClick={() => setCircuitSlip(0.03)}
-                                            className={`toggle-button ${circuitSlip === 0.03 ? 'active' : ''}`}
-                                        >
+                                        <button onClick={() => setCircuitSlip(0.03)}
+                                            className={`px-3 py-1 rounded text-xs ${circuitSlip === 0.03 ? 'bg-green-600' : 'bg-gray-600'}`}>
                                             s = 0.03 (定格)
                                         </button>
                                     </div>
-                                    
-                                    {/* 誘導機等価回路図 */}
-                                    <svg viewBox="0 0 600 220" style={{width: '100%', maxWidth: '600px', margin: '0 auto', display: 'block'}}>
-                                        <rect x="0" y="0" width="600" height="220" fill="#1F2937" rx="8" />
-                                        
-                                        {/* 電源 */}
-                                        <circle cx="40" cy="110" r="18" fill="none" stroke="#3B82F6" strokeWidth="2" />
-                                        <text x="40" y="115" textAnchor="middle" fill="#3B82F6" fontSize="12" fontWeight="bold">V</text>
-                                        <line x1="40" y1="92" x2="40" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        <line x1="40" y1="128" x2="40" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        <line x1="40" y1="50" x2="80" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* R1 */}
-                                        <rect x="80" y="40" width="40" height="20" fill="none" stroke="#EF4444" strokeWidth="2" />
-                                        <text x="100" y="35" textAnchor="middle" fill="#EF4444" fontSize="10">R₁</text>
-                                        
-                                        <line x1="120" y1="50" x2="150" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* X1 */}
-                                        <path d="M150,50 Q160,40 170,50 Q180,60 190,50 Q200,40 210,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
-                                        <text x="180" y="35" textAnchor="middle" fill="#F59E0B" fontSize="10">jX₁</text>
-                                        
-                                        <line x1="210" y1="50" x2="250" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        <circle cx="250" cy="50" r="3" fill="#9CA3AF" />
-                                        
-                                        {/* 励磁回路 */}
-                                        <line x1="250" y1="50" x2="250" y2="80" stroke="#9CA3AF" strokeWidth="2" />
-                                        <path d="M250,80 Q240,90 250,100 Q260,110 250,120 Q240,130 250,140" fill="none" stroke="#22C55E" strokeWidth="2" />
-                                        <text x="230" y="115" textAnchor="end" fill="#22C55E" fontSize="9">jXₘ</text>
-                                        <line x1="250" y1="140" x2="250" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        <line x1="250" y1="50" x2="300" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* X2' */}
-                                        <path d="M300,50 Q310,40 320,50 Q330,60 340,50 Q350,40 360,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
-                                        <text x="330" y="35" textAnchor="middle" fill="#F59E0B" fontSize="10">jX₂'</text>
-                                        
-                                        <line x1="360" y1="50" x2="400" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* R2'/s */}
-                                        <rect x="400" y="40" width="50" height="20" fill="none" stroke="#EC4899" strokeWidth="2" />
-                                        <text x="425" y="35" textAnchor="middle" fill="#EC4899" fontSize="10">R₂'/s</text>
-                                        
-                                        <line x1="450" y1="50" x2="480" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* 外部抵抗（巻線型の場合） */}
-                                        {motor.id === 'woundRotor' && (
-                                            <>
-                                                <rect x="480" y="40" width="40" height="20" fill="none" stroke="#A855F7" strokeWidth="2" strokeDasharray="4,2" />
-                                                <text x="500" y="35" textAnchor="middle" fill="#A855F7" fontSize="10">R_ext</text>
-                                                <line x1="520" y1="50" x2="560" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                                <line x1="560" y1="50" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                                            </>
-                                        )}
-                                        {motor.id !== 'woundRotor' && (
-                                            <>
-                                                <line x1="480" y1="50" x2="560" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                                <line x1="560" y1="50" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                                            </>
-                                        )}
-                                        
-                                        <line x1="40" y1="170" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* スリップ表示 */}
-                                        <rect x="400" y="70" width="80" height="30" fill="#374151" rx="4" />
-                                        <text x="440" y="85" textAnchor="middle" fill="#9CA3AF" fontSize="9">s = {circuitSlip}</text>
-                                        <text x="440" y="96" textAnchor="middle" fill="#EC4899" fontSize="8">
-                                            {circuitSlip === 1 ? '(停止)' : '(定格)'}
-                                        </text>
-                                        
-                                        {/* 凡例 */}
-                                        <text x="20" y="200" fill="#9CA3AF" fontSize="9">
-                                            <tspan fill="#EF4444">R₁</tspan>:一次抵抗 <tspan fill="#F59E0B">X₁,X₂'</tspan>:漏れリアクタンス <tspan fill="#22C55E">Xₘ</tspan>:励磁 <tspan fill="#EC4899">R₂'/s</tspan>:二次抵抗
-                                            {motor.id === 'woundRotor' && <tspan fill="#A855F7"> R_ext</tspan>}
-                                            {motor.id === 'woundRotor' && ':外部抵抗'}
-                                        </text>
-                                    </svg>
-                                    
+                                    <InductionMotorCircuit slip={circuitSlip} hasExternalResistor={motor.id === 'woundRotor'} />
                                     {motor.id === 'woundRotor' && (
-                                        <div style={{marginTop: '10px', fontSize: '0.8rem', color: '#A855F7', backgroundColor: '#374151', padding: '10px', borderRadius: '6px'}}>
+                                        <div className="mt-2 text-xs text-purple-300 bg-gray-700 p-2 rounded">
                                             💡 巻線型はスリップリング経由で外部抵抗 R_ext を接続可能。始動時に抵抗を大きくして電流を抑制できます。
                                         </div>
                                     )}
-                                </div>
+                                </>
                             )}
                             
                             {motor.category === '同期機' && (
-                                <div>
-                                    {/* 同期機等価回路図 */}
-                                    <svg viewBox="0 0 600 220" style={{width: '100%', maxWidth: '600px', margin: '0 auto', display: 'block'}}>
-                                        <rect x="0" y="0" width="600" height="220" fill="#1F2937" rx="8" />
-                                        
-                                        {/* 電源 */}
-                                        <circle cx="40" cy="110" r="18" fill="none" stroke="#3B82F6" strokeWidth="2" />
-                                        <text x="40" y="115" textAnchor="middle" fill="#3B82F6" fontSize="12" fontWeight="bold">V</text>
-                                        <line x1="40" y1="92" x2="40" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        <line x1="40" y1="128" x2="40" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        <line x1="40" y1="50" x2="80" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* Ra - 電機子抵抗 */}
-                                        <rect x="80" y="40" width="40" height="20" fill="none" stroke="#EF4444" strokeWidth="2" />
-                                        <text x="100" y="35" textAnchor="middle" fill="#EF4444" fontSize="10">Rₐ</text>
-                                        
-                                        <line x1="120" y1="50" x2="160" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* Xs - 同期リアクタンス */}
-                                        {motor.id === 'salientPole' ? (
-                                            <>
-                                                <path d="M160,50 Q175,35 190,50 Q205,65 220,50 Q235,35 250,50 Q265,65 280,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
-                                                <text x="220" y="30" textAnchor="middle" fill="#F59E0B" fontSize="10">jXd (直軸)</text>
-                                                <text x="220" y="75" textAnchor="middle" fill="#F59E0B" fontSize="9" opacity="0.7">jXq (横軸)</text>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <path d="M160,50 Q175,35 190,50 Q205,65 220,50 Q235,35 250,50 Q265,65 280,50" fill="none" stroke="#F59E0B" strokeWidth="2" />
-                                                <text x="220" y="30" textAnchor="middle" fill="#F59E0B" fontSize="10">jXs</text>
-                                            </>
-                                        )}
-                                        
-                                        <line x1="280" y1="50" x2="350" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* 誘起電圧 E */}
-                                        <circle cx="380" cy="50" r="25" fill="none" stroke="#22C55E" strokeWidth="2" />
-                                        <text x="380" y="55" textAnchor="middle" fill="#22C55E" fontSize="14" fontWeight="bold">E</text>
-                                        <text x="380" y="90" textAnchor="middle" fill="#22C55E" fontSize="9">誘起電圧</text>
-                                        
-                                        <line x1="405" y1="50" x2="450" y2="50" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* 界磁回路（DC励磁） */}
-                                        <rect x="450" y="30" width="100" height="60" fill="#374151" stroke="#A855F7" strokeWidth="2" rx="4" />
-                                        <text x="500" y="55" textAnchor="middle" fill="#A855F7" fontSize="10">界磁回路</text>
-                                        <text x="500" y="70" textAnchor="middle" fill="#A855F7" fontSize="9">(DC励磁)</text>
-                                        
-                                        <line x1="550" y1="60" x2="560" y2="60" stroke="#9CA3AF" strokeWidth="2" />
-                                        <line x1="560" y1="60" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                                        <line x1="40" y1="170" x2="560" y2="170" stroke="#9CA3AF" strokeWidth="2" />
-                                        
-                                        {/* 凡例 */}
-                                        <text x="20" y="200" fill="#9CA3AF" fontSize="9">
-                                            <tspan fill="#EF4444">Rₐ</tspan>:電機子抵抗 
-                                            <tspan fill="#F59E0B">{motor.id === 'salientPole' ? 'Xd,Xq' : 'Xs'}</tspan>:{motor.id === 'salientPole' ? '直軸・横軸リアクタンス' : '同期リアクタンス'} 
-                                            <tspan fill="#22C55E">E</tspan>:誘起電圧 
-                                            <tspan fill="#A855F7">界磁</tspan>:DC励磁
-                                        </text>
-                                        
-                                        {motor.id === 'salientPole' && (
-                                            <text x="20" y="215" fill="#9CA3AF" fontSize="8">
-                                                ※突極型はXd ≠ Xq（磁気的非対称性）
-                                            </text>
-                                        )}
-                                    </svg>
-                                    
-                                    <div style={{marginTop: '10px', fontSize: '0.8rem', color: '#3B82F6', backgroundColor: '#374151', padding: '10px', borderRadius: '6px'}}>
+                                <>
+                                    <SynchronousMotorCircuit isSalient={motor.id === 'salientPole'} />
+                                    <div className="mt-2 text-xs text-blue-300 bg-gray-700 p-2 rounded">
                                         💡 同期機は自己始動できないため、ダンパ巻線で誘導機として始動→同期引入れ、またはインバータ始動が必要です。
                                     </div>
-                                </div>
+                                </>
                             )}
                         </div>
                     )}
-
-                    {/* 比較表 */}
-                    <div style={{backgroundColor: '#374151', borderRadius: '8px', padding: '20px'}}>
-                        <h3 style={{margin: '0 0 15px 0', fontSize: '1.2rem', color: '#D1D5DB'}}>モーター種類の比較</h3>
-                        <table className="comparison-table">
-                            <thead>
-                                <tr>
-                                    <th>モーター種類</th>
-                                    <th>カテゴリ</th>
-                                    <th>突入倍率</th>
-                                    <th>始動トルク</th>
-                                    <th>主な用途</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {Object.values(MOTOR_TYPES).map((m) => (
-                                    <tr 
-                                        key={m.id}
-                                        onClick={() => setSelectedMotor(m.id)}
-                                        style={{backgroundColor: selectedMotor === m.id ? '#4B5563' : 'transparent'}}
-                                    >
-                                        <td style={{color: '#3B82F6', fontWeight: 'bold'}}>{m.name}</td>
-                                        <td>{m.category}</td>
-                                        <td style={{color: '#F59E0B', fontWeight: 'bold'}}>{m.inrushMultiplier}倍</td>
-                                        <td style={{color: '#22C55E', fontWeight: 'bold'}}>{m.startTorque} p.u.</td>
-                                        <td style={{fontSize: '0.85rem'}}>{m.applications}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    
+                    {/* 三相電流波形 */}
+                    <div className="bg-gray-800 p-4 rounded-lg mb-4">
+                        <h2 className="text-sm font-semibold mb-2 text-gray-300">三相電流波形 [A] - {motor.name}</h2>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <LineChart data={simulationData.data} margin={{ top: 10, right: 30, left: 10, bottom: 30 }}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                                <ReferenceArea x1={0} x2={simulationData.stopTimeMs} fill="#1F2937" fillOpacity={0.8} />
+                                <XAxis dataKey="time" stroke="#9CA3AF"
+                                    label={{ value: '時間 [ms]', position: 'bottom', fill: '#9CA3AF', fontSize: 12 }}
+                                    tickFormatter={(v) => v.toFixed(0)} />
+                                <YAxis stroke="#9CA3AF" domain={['auto', 'auto']} tickFormatter={(v) => v.toFixed(0)} />
+                                <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: 'none', fontSize: 12 }}
+                                    labelFormatter={(v) => `${v.toFixed(1)} ms`} />
+                                <Legend wrapperStyle={{ fontSize: 11 }} />
+                                <ReferenceLine y={0} stroke="#4B5563" />
+                                <ReferenceLine x={simulationData.stopTimeMs} stroke="#F59E0B" strokeWidth={2}
+                                    label={{ value: '投入', fill: '#F59E0B', fontSize: 10, position: 'top' }} />
+                                <ReferenceLine y={simulationData.peakRated} stroke="#10B981" strokeDasharray="5 5" />
+                                <ReferenceLine y={-simulationData.peakRated} stroke="#10B981" strokeDasharray="5 5" />
+                                {showEnvelope && (
+                                    <>
+                                        <Line type="monotone" dataKey="envPos" name="包絡線" stroke="#6B7280" dot={false} strokeWidth={1} strokeDasharray="3 3" />
+                                        <Line type="monotone" dataKey="envNeg" stroke="#6B7280" dot={false} strokeWidth={1} strokeDasharray="3 3" legendType="none" />
+                                    </>
+                                )}
+                                <Line type="monotone" dataKey="iU" name="U相" stroke="#EF4444" dot={false} strokeWidth={1.5} />
+                                <Line type="monotone" dataKey="iV" name="V相" stroke="#22C55E" dot={false} strokeWidth={1.5} />
+                                <Line type="monotone" dataKey="iW" name="W相" stroke="#3B82F6" dot={false} strokeWidth={1.5} />
+                            </LineChart>
+                        </ResponsiveContainer>
                     </div>
-
-                    {/* フッター */}
-                    <footer style={{textAlign: 'center', marginTop: '40px', padding: '20px', color: '#9CA3AF', fontSize: '0.9rem'}}>
-                        <p>📚 モーター学習教材プロジェクト | 🔗 <a href="../" style={{color: '#3B82F6'}}>メインページに戻る</a></p>
-                        <p style={{fontSize: '0.8rem', marginTop: '10px'}}>
-                            このシミュレーターは教育目的で作成されました。実際の設計には専門ソフトウェアと物理試験が必要です。
-                        </p>
-                    </footer>
+                    
+                    {/* U相 + DC成分 */}
+                    <div className="bg-gray-800 p-4 rounded-lg mb-4">
+                        <h2 className="text-sm font-semibold mb-2 text-gray-300">U相電流とDC成分 [A]</h2>
+                        <ResponsiveContainer width="100%" height={200}>
+                            <LineChart data={simulationData.data} margin={{ top: 10, right: 30, left: 10, bottom: 30 }}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                                <ReferenceArea x1={0} x2={simulationData.stopTimeMs} fill="#1F2937" fillOpacity={0.8} />
+                                <XAxis dataKey="time" stroke="#9CA3AF" tickFormatter={(v) => v.toFixed(0)} />
+                                <YAxis stroke="#9CA3AF" />
+                                <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: 'none', fontSize: 12 }} />
+                                <Legend wrapperStyle={{ fontSize: 11 }} />
+                                <ReferenceLine y={0} stroke="#4B5563" />
+                                <ReferenceLine x={simulationData.stopTimeMs} stroke="#F59E0B" strokeWidth={2} />
+                                <Line type="monotone" dataKey="iU" name="U相" stroke="#EF4444" dot={false} strokeWidth={2} />
+                                <Line type="monotone" dataKey="dcU" name="DC成分" stroke="#F59E0B" dot={false} strokeWidth={2} strokeDasharray="5 5" />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                    
+                    {/* 比較表 */}
+                    <div className="bg-gray-800 p-4 rounded-lg">
+                        <h3 className="text-sm font-semibold text-gray-300 mb-3">モーター種類の比較</h3>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-xs">
+                                <thead>
+                                    <tr className="border-b border-gray-600">
+                                        <th className="text-left py-2 px-2 text-gray-400">種類</th>
+                                        <th className="text-center py-2 px-2 text-gray-400">カテゴリ</th>
+                                        <th className="text-center py-2 px-2 text-gray-400">突入倍率</th>
+                                        <th className="text-center py-2 px-2 text-gray-400">始動トルク</th>
+                                        <th className="text-left py-2 px-2 text-gray-400">主な用途</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Object.values(MOTOR_TYPES).map((m) => (
+                                        <tr 
+                                            key={m.id} 
+                                            className={`border-b border-gray-700 cursor-pointer hover:bg-gray-700 ${selectedMotor === m.id ? 'bg-gray-700' : ''}`}
+                                            onClick={() => setSelectedMotor(m.id)}
+                                        >
+                                            <td className="py-2 px-2 font-medium text-blue-400">{m.name}</td>
+                                            <td className="py-2 px-2 text-center text-gray-300">{m.category}</td>
+                                            <td className="py-2 px-2 text-center text-yellow-400">{m.inrushMultiplier}倍</td>
+                                            <td className="py-2 px-2 text-center text-green-400">{m.startTorque} p.u.</td>
+                                            <td className="py-2 px-2 text-gray-300">{m.applications}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             );
         }
